@@ -1,0 +1,14 @@
+# IntelliJ project files
+.idea/
+*.iml
+
+out/
+target/
+
+### Java template
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
