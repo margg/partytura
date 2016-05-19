@@ -1,3 +1,4 @@
+/*
 package pl.edu.agh.tai.partytura.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,4 +13,4 @@ public class HomeController {
         return "Hello World!";
     }
 
-}
+}*/

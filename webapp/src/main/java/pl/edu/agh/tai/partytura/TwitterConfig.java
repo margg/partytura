@@ -1,30 +1,33 @@
 package pl.edu.agh.tai.partytura;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.social.UserIdSource;
-import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
-import org.springframework.social.config.annotation.SocialConfigurer;
+import org.springframework.social.config.annotation.EnableSocial;
+import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.web.ConnectController;
 
 @Configuration
-public class TwitterConfig implements SocialConfigurer {
+@EnableSocial
+public class TwitterConfig extends SocialConfigurerAdapter {
 
-  public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-    cfConfig.addConnectionFactory(new TwitterConnectionFactory(
-            env.getProperty("twitter.consumerKey"),
-            env.getProperty("twitter.consumerSecret")));
+  @Bean
+  public UserIdSource userIdSource() {
+    return new UserIdSource() {
+      @Override
+      public String getUserId() {
+        return "testuser";
+      }
+    };
   }
 
-//  ...
-  public UserIdSource getUserIdSource() {
-    return null;
-  }
-
-  public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-    return null;
+  @Bean
+  public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
+    ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
+    controller.setApplicationUrl("https://localhost:8080/");
+    return controller;
   }
 
 }
