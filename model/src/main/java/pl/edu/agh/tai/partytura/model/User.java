@@ -12,4 +12,6 @@ public abstract class User {
   }
 
   public abstract void addPost(String content, Event event);
+
+  public abstract void addComment(String content, Post post);
 }

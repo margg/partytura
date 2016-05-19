@@ -4,6 +4,10 @@ package pl.edu.agh.tai.partytura.model;
 import org.junit.Before;
 import org.junit.Test;
 import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
+import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
+import pl.edu.agh.tai.partytura.model.factories.PostFactory;
+
+import java.sql.Timestamp;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
@@ -16,12 +20,14 @@ public class AttenderTest {
   private Attender attender;
   private Institution institution;
   private PostFactory postFactory;
+  private CommentFactory commentFactory;
 
   @Before
   public void setUp() throws Exception {
     postFactory = mock(PostFactory.class);
-    attender = new Attender("wikla", postFactory);
+    commentFactory = mock(CommentFactory.class);
     institution = mock(Institution.class);
+    attender = new Attender("wikla", postFactory, commentFactory);
   }
 
   @Test
@@ -105,6 +111,21 @@ public class AttenderTest {
 
     //then
     verify(event).addPost(post);
+  }
+
+  @Test
+  public void shouldBeAbleToAddCommentToPost() throws Exception {
+    // given
+    Post post = mock(Post.class);
+    String commentContent = "Comment";
+    Comment comment = new Comment(commentContent, attender, mock(Timestamp.class));
+    when(commentFactory.createComment(commentContent, attender)).thenReturn(comment);
+
+    // when
+    attender.addComment(commentContent, post);
+
+    //then
+    verify(post).addComment(comment);
   }
 
 
