@@ -26,7 +26,7 @@ public class TwitterConfig extends SocialConfigurerAdapter {
   @Bean
   public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
     ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
-    controller.setApplicationUrl("https://localhost:8080/");
+    controller.setApplicationUrl("http://localhost:8080/");
     return controller;
   }
 
