@@ -11,5 +11,5 @@ public abstract class User {
     return username;
   }
 
-  public abstract void addPost(Post post, Event event);
+  public abstract void addPost(String content, Event event);
 }

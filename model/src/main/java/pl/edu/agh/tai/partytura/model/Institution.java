@@ -32,7 +32,7 @@ public class Institution extends User {
   }
 
   @Override
-  public void addPost(Post post, Event event) {
+  public void addPost(String content, Event event) {
 
   }
 }

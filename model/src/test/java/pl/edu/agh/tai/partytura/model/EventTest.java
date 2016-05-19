@@ -10,7 +10,7 @@ public class EventTest {
   @Test
   public void shouldAllowToAddPosts() throws Exception {
     // given
-    Event event = new Event();
+    Event event = new Event("Event");
     Post post = mock(Post.class);
 
     // when

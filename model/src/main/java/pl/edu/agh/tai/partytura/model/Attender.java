@@ -1,6 +1,7 @@
 package pl.edu.agh.tai.partytura.model;
 
 import com.google.common.collect.ImmutableList;
+import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,14 +13,16 @@ public class Attender extends User {
 
   private List<Institution> followedInstitutions = new ArrayList<>();
   private Set<Event> joinedEvents = new HashSet<>();
+  private PostFactory postFactory;
 
-  public Attender(String username) {
+  public Attender(String username, PostFactory postFactory) {
     super(username);
+    this.postFactory = postFactory;
   }
 
   @Override
-  public void addPost(Post post, Event event) {
-
+  public void addPost(String content, Event event) {
+    event.addPost(postFactory.createPost(content));
   }
 
   public void follow(Institution institution) {

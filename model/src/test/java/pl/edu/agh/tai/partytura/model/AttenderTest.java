@@ -3,20 +3,24 @@ package pl.edu.agh.tai.partytura.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AttenderTest {
 
   private Attender attender;
   private Institution institution;
+  private PostFactory postFactory;
 
   @Before
   public void setUp() throws Exception {
-    attender = new Attender("wikla");
+    postFactory = mock(PostFactory.class);
+    attender = new Attender("wikla", postFactory);
     institution = mock(Institution.class);
   }
 
@@ -93,9 +97,11 @@ public class AttenderTest {
     // given
     Event event = mock(Event.class);
     Post post = mock(Post.class);
+    String content = "Post content";
+    when(postFactory.createPost(content)).thenReturn(post);
 
     // when
-    attender.addPost(post, event);
+    attender.addPost(content, event);
 
     //then
     verify(event).addPost(post);
