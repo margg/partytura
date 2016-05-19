@@ -21,4 +21,8 @@ public class Event {
   public List<Post> getPosts() {
     return ImmutableList.copyOf(posts);
   }
+
+  public String getEventName() {
+    return eventName;
+  }
 }

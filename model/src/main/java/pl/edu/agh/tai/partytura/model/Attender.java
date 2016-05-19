@@ -22,17 +22,13 @@ public class Attender extends User {
 
   @Override
   public void addPost(String content, Event event) {
-    event.addPost(postFactory.createPost(content));
+    event.addPost(postFactory.createPost(content, this));
   }
 
   public void follow(Institution institution) {
     if (!followedInstitutions.contains(institution)) {
       this.followedInstitutions.add(institution);
     }
-  }
-
-  public List<Institution> getFollowedInstitutions() {
-    return Collections.unmodifiableList(followedInstitutions);
   }
 
   public void unfollow(Institution institution) throws UnfollowingNotFollowedInstitutionException {
@@ -42,11 +38,15 @@ public class Attender extends User {
     }
   }
 
-  public List<Event> getJoinedEvents() {
-    return ImmutableList.copyOf(joinedEvents);
-  }
-
   public void joinEvent(Event event) {
     this.joinedEvents.add(event);
+  }
+
+  public List<Institution> getFollowedInstitutions() {
+    return Collections.unmodifiableList(followedInstitutions);
+  }
+
+  public List<Event> getJoinedEvents() {
+    return ImmutableList.copyOf(joinedEvents);
   }
 }

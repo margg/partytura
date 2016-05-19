@@ -98,7 +98,7 @@ public class AttenderTest {
     Event event = mock(Event.class);
     Post post = mock(Post.class);
     String content = "Post content";
-    when(postFactory.createPost(content)).thenReturn(post);
+    when(postFactory.createPost(content, attender)).thenReturn(post);
 
     // when
     attender.addPost(content, event);

@@ -8,10 +8,12 @@ public class Institution extends User {
   private EventFactory eventFactory;
   private Set<Event> createdEvents = new HashSet<>();
   private Set<String> genres = new HashSet<>();
+  private PostFactory postFactory;
 
-  public Institution(String username, EventFactory eventFactory) {
+  public Institution(String username, EventFactory eventFactory, PostFactory postFactory) {
     super(username);
     this.eventFactory = eventFactory;
+    this.postFactory = postFactory;
   }
 
   public void createEvent(String eventName) {
@@ -33,6 +35,6 @@ public class Institution extends User {
 
   @Override
   public void addPost(String content, Event event) {
-
+    this.postFactory.createPost(content, this);
   }
 }

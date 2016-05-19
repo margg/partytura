@@ -7,17 +7,16 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by wikla on 19.05.16.
- */
 public class InstitutionTest {
   private Institution institution;
   private EventFactory eventFactory;
+  private PostFactory postFactory;
 
   @Before
   public void setUp() {
     eventFactory = mock(EventFactory.class);
-    institution = new Institution("ICE Congress Centre", eventFactory);
+    postFactory = mock(PostFactory.class);
+    institution = new Institution("ICE Congress Centre", eventFactory, postFactory);
   }
 
   @Test
