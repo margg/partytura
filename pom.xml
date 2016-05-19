@@ -13,14 +13,7 @@
         <module>webapp</module>
     </modules>
 
-    <dependencies>
-        <!--  Testing dependencies  -->
-        <dependency>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
-            <version>0.28</version>
-        </dependency>
-    </dependencies>
+
     <build>
         <plugins>
             <plugin>

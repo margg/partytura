@@ -1,15 +1,25 @@
 package pl.edu.agh.tai.partytura.model;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Attender extends User {
 
   private List<Institution> followedInstitutions = new ArrayList<>();
+  private Set<Event> joinedEvents = new HashSet<>();
 
   public Attender(String username) {
     super(username);
+  }
+
+  @Override
+  public void addPost(Post post, Event event) {
+
   }
 
   public void follow(Institution institution) {
@@ -27,5 +37,13 @@ public class Attender extends User {
     if (!removed) {
       throw new UnfollowingNotFollowedInstitutionException();
     }
+  }
+
+  public List<Event> getJoinedEvents() {
+    return ImmutableList.copyOf(joinedEvents);
+  }
+
+  public void joinEvent(Event event) {
+    this.joinedEvents.add(event);
   }
 }

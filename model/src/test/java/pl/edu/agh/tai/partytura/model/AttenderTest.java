@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AttenderTest {
 
@@ -54,7 +56,7 @@ public class AttenderTest {
 
       //then
     } catch (UnfollowingNotFollowedInstitutionException e) {
-      fail("Should not throw exception when unfollowing followed institution.");
+      assert_().fail("Should not throw exception when unfollowing followed institution.");
     }
     assertThat(attender.getFollowedInstitutions()).isEmpty();
   }
@@ -68,9 +70,36 @@ public class AttenderTest {
       attender.unfollow(institution);
 
       //then
-      fail("Should throw exception when unfollowing not followed institution.");
+      assert_().fail("Should throw exception when unfollowing not followed institution.");
     } catch (UnfollowingNotFollowedInstitutionException e) {
       assertThat(attender.getFollowedInstitutions()).isEmpty();
     }
   }
+
+  @Test
+  public void shouldBeAbleToJoinEvent() throws Exception {
+    // given
+    Event event = mock(Event.class);
+
+    // when
+    attender.joinEvent(event);
+
+    //then
+    assertThat(attender.getJoinedEvents()).containsExactly(event);
+  }
+
+  @Test
+  public void shouldBeAbleToAddPostToEvent() throws Exception {
+    // given
+    Event event = mock(Event.class);
+    Post post = mock(Post.class);
+
+    // when
+    attender.addPost(post, event);
+
+    //then
+    verify(event).addPost(post);
+  }
+
+
 }

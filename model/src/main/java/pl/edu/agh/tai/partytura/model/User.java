@@ -10,4 +10,6 @@ public abstract class User {
   public String getUsername() {
     return username;
   }
+
+  public abstract void addPost(Post post, Event event);
 }
