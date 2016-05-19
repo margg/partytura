@@ -17,7 +17,7 @@ public class AttenderTest {
   @Before
   public void setUp() throws Exception {
     attender = new Attender("wikla");
-    institution = new Institution("FilharmoniaKrakowska");
+    institution = mock(Institution.class);
   }
 
   @Test
