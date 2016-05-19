@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/")
@@ -36,9 +37,18 @@ public class HomeController {
       return "redirect:/connect/twitter";
     }
 
+    ArrayList<TwitterProfile> allFollowed = new ArrayList<TwitterProfile>();
+
     model.addAttribute(twitter.userOperations().getUserProfile());
+
     CursoredList<TwitterProfile> friends = twitter.friendOperations().getFriends();
-    model.addAttribute("friends", friends);
+    allFollowed.addAll(friends);
+
+    while (friends.hasNext()) {
+      allFollowed.addAll(twitter.friendOperations().getFriendsInCursor(friends.getNextCursor()));
+    }
+
+    model.addAttribute("friends", allFollowed);
     return "dashboard";
   }
 
