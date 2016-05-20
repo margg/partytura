@@ -1,19 +1,36 @@
 package pl.edu.agh.tai.partytura.model;
 
+import org.springframework.data.annotation.Id;
 import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.EventFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Institution extends User {
 
+  @Id
+  private String id;
+
+  @Inject
   private EventFactory eventFactory;
+
+  @Inject
+  private PostFactory postFactory;
+
+  @Inject
+  private CommentFactory commentFactory;
+
   private Set<Event> createdEvents = new HashSet<>();
   private Set<String> genres = new HashSet<>();
-  private PostFactory postFactory;
-  private CommentFactory commentFactory;
+
+  public Institution() {}
+
+  public Institution(String username) {
+    super(username);
+  }
 
   public Institution(String username, EventFactory eventFactory, PostFactory postFactory, CommentFactory commentFactory) {
     super(username);
@@ -45,7 +62,15 @@ public class Institution extends User {
     return createdEvents;
   }
 
+  public void setCreatedEvents(Set<Event> createdEvents) {
+    this.createdEvents = createdEvents;
+  }
+
   public Set<String> getGenres(){
     return genres;
+  }
+
+  public void setGenres(Set<String> genres) {
+    this.genres = genres;
   }
 }

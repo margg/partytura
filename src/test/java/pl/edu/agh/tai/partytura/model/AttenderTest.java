@@ -8,13 +8,11 @@ import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstituti
 import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AttenderTest {
 
@@ -119,7 +117,7 @@ public class AttenderTest {
     // given
     Post post = mock(Post.class);
     String commentContent = "Comment";
-    Comment comment = new Comment(commentContent, attender, mock(Timestamp.class));
+    Comment comment = new Comment(commentContent, attender, LocalDateTime.of(2016, 6, 10, 10, 0));
     when(commentFactory.createComment(commentContent, attender)).thenReturn(comment);
 
     // when

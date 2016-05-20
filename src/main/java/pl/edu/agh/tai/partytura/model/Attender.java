@@ -1,20 +1,34 @@
 package pl.edu.agh.tai.partytura.model;
 
-import com.google.common.collect.ImmutableList;
-import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
+import com.google.common.collect.ImmutableSet;
+import org.springframework.data.annotation.Id;
 import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
+import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
-import java.util.*;
+import javax.inject.Inject;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Attender extends User {
 
+  @Id
   private String id;
 
-  private List<Institution> followedInstitutions = new ArrayList<>();
-  private Set<Event> joinedEvents = new HashSet<>();
+  @Inject
   private PostFactory postFactory;
+
+  @Inject
   private CommentFactory commentFactory;
+
+  private Set<Institution> followedInstitutions = new HashSet<>();
+  private Set<Event> joinedEvents = new HashSet<>();
+
+  public Attender() {}
+
+  public Attender(String username) {
+    super(username);
+  }
 
   public Attender(String username, PostFactory postFactory, CommentFactory commentFactory) {
     super(username);
@@ -33,9 +47,7 @@ public class Attender extends User {
   }
 
   public void follow(Institution institution) {
-    if (!followedInstitutions.contains(institution)) {
-      this.followedInstitutions.add(institution);
-    }
+    this.followedInstitutions.add(institution);
   }
 
   public void unfollow(Institution institution) throws UnfollowingNotFollowedInstitutionException {
@@ -49,11 +61,20 @@ public class Attender extends User {
     this.joinedEvents.add(event);
   }
 
-  public List<Institution> getFollowedInstitutions() {
-    return Collections.unmodifiableList(followedInstitutions);
+
+  public Set<Institution> getFollowedInstitutions() {
+    return ImmutableSet.copyOf(followedInstitutions);
   }
 
-  public List<Event> getJoinedEvents() {
-    return ImmutableList.copyOf(joinedEvents);
+  public void setFollowedInstitutions(Set<Institution> followedInstitutions) {
+    this.followedInstitutions = followedInstitutions;
+  }
+
+  public Set<Event> getJoinedEvents() {
+    return ImmutableSet.copyOf(joinedEvents);
+  }
+
+  public void setJoinedEvents(Set<Event> joinedEvents) {
+    this.joinedEvents = new HashSet<>(joinedEvents);
   }
 }

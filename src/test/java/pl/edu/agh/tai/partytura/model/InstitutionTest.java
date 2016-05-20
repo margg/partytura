@@ -6,12 +6,10 @@ import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.EventFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class InstitutionTest {
   private Institution institution;
@@ -60,7 +58,7 @@ public class InstitutionTest {
     // given
     Post post = mock(Post.class);
     String commentContent = "Comment";
-    Comment comment = new Comment(commentContent, institution, mock(Timestamp.class));
+    Comment comment = new Comment(commentContent, institution, LocalDateTime.of(2016, 6, 10, 10, 0));
     when(commentFactory.createComment(commentContent, institution)).thenReturn(comment);
 
     // when

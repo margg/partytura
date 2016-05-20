@@ -1,17 +1,17 @@
 package pl.edu.agh.tai.partytura.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Comment {
 
   private final String content;
   private final User author;
-  private final Timestamp timestamp;
+  private final LocalDateTime dateTime;
 
-  public Comment(String content, User author, Timestamp timestamp) {
+  public Comment(String content, User author, LocalDateTime dateTime) {
     this.content = content;
     this.author = author;
-    this.timestamp = timestamp;
+    this.dateTime = dateTime;
   }
 
   public String getContent() {
@@ -22,7 +22,7 @@ public class Comment {
     return author;
   }
 
-  public Timestamp getTimestamp() {
-    return timestamp;
+  public LocalDateTime getDateTime() {
+    return dateTime;
   }
 }
