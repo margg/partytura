@@ -1,12 +1,13 @@
 package pl.edu.agh.tai.partytura.model;
 
-import com.google.common.collect.ImmutableList;
 import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Event {
 
   @Id
@@ -17,6 +18,8 @@ public class Event {
   private LocalDateTime dateTime;
   private EventLocation location;
   private List<Post> posts = new ArrayList<>();
+
+  public Event() {}
 
   public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
     this.eventName = eventName;
@@ -30,7 +33,7 @@ public class Event {
   }
 
   public List<Post> getPosts() {
-    return ImmutableList.copyOf(posts);
+    return posts;
   }
 
   public void setPosts(List<Post> posts) {
@@ -67,5 +70,13 @@ public class Event {
 
   public void setLocation(EventLocation location) {
     this.location = location;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }

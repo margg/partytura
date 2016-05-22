@@ -29,10 +29,14 @@ public class InstitutionTest {
   public void shouldCreateEventAndAddItToCreatedEventsSet() {
     //given
     Event event = mock(Event.class);
-    when(eventFactory.createEvent("meh")).thenReturn(event);
+    String eventName = "meh";
+    String eventHashtag = "eventHashtag";
+    LocalDateTime dateTime = LocalDateTime.of(2016, 7, 10, 18, 0);
+    EventLocation location = new EventLocation("ICE");
+    when(eventFactory.createEvent(eventName, eventHashtag, dateTime, location)).thenReturn(event);
 
     //when
-    institution.createEvent("meh");
+    institution.createEvent(eventName, eventHashtag, dateTime, location);
 
     //then
     assertThat(institution.getCreatedEvents()).containsExactly(event);

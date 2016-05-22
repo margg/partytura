@@ -1,6 +1,6 @@
 package pl.edu.agh.tai.partytura.model;
 
-import com.google.common.collect.ImmutableList;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import java.util.List;
 public class Post {
 
   private String content;
+
+  @DBRef
   private User author;
   private LocalDateTime dateTime;
   private List<Comment> comments = new ArrayList<>();
@@ -48,7 +50,7 @@ public class Post {
   }
 
   public List<Comment> getComments() {
-    return ImmutableList.copyOf(comments);
+    return comments;
   }
 
   public void setComments(List<Comment> comments) {

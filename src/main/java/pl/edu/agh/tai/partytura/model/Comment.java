@@ -1,11 +1,15 @@
 package pl.edu.agh.tai.partytura.model;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import java.time.LocalDateTime;
 
 public class Comment {
 
-  private final String content;
+  @DBRef
   private final User author;
+
+  private final String content;
   private final LocalDateTime dateTime;
 
   public Comment(String content, User author, LocalDateTime dateTime) {

@@ -1,27 +1,35 @@
 package pl.edu.agh.tai.partytura.model;
 
-import com.google.common.collect.ImmutableSet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.stereotype.Component;
 import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
 import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
-import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class Attender extends User {
 
   @Id
   private String id;
 
-  @Inject
+  @Autowired
+  @Transient
   private PostFactory postFactory;
 
-  @Inject
+  @Autowired
+  @Transient
   private CommentFactory commentFactory;
 
+  @DBRef
   private Set<Institution> followedInstitutions = new HashSet<>();
+
+  @DBRef
   private Set<Event> joinedEvents = new HashSet<>();
 
   public Attender() {}
@@ -63,18 +71,42 @@ public class Attender extends User {
 
 
   public Set<Institution> getFollowedInstitutions() {
-    return ImmutableSet.copyOf(followedInstitutions);
+    return followedInstitutions;
   }
 
   public void setFollowedInstitutions(Set<Institution> followedInstitutions) {
-    this.followedInstitutions = followedInstitutions;
+    this.followedInstitutions = new HashSet<>(followedInstitutions);
   }
 
   public Set<Event> getJoinedEvents() {
-    return ImmutableSet.copyOf(joinedEvents);
+    return joinedEvents;
   }
 
   public void setJoinedEvents(Set<Event> joinedEvents) {
     this.joinedEvents = new HashSet<>(joinedEvents);
+  }
+
+  public PostFactory getPostFactory() {
+    return postFactory;
+  }
+
+  public void setPostFactory(PostFactory postFactory) {
+    this.postFactory = postFactory;
+  }
+
+  public CommentFactory getCommentFactory() {
+    return commentFactory;
+  }
+
+  public void setCommentFactory(CommentFactory commentFactory) {
+    this.commentFactory = commentFactory;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }

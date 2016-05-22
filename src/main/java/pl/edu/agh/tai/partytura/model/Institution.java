@@ -1,26 +1,29 @@
 package pl.edu.agh.tai.partytura.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
 import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.EventFactory;
 import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 
-import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class Institution extends User {
 
   @Id
   private String id;
 
-  @Inject
+  @Autowired
   private EventFactory eventFactory;
 
-  @Inject
+  @Autowired
   private PostFactory postFactory;
 
-  @Inject
+  @Autowired
   private CommentFactory commentFactory;
 
   private Set<Event> createdEvents = new HashSet<>();
@@ -39,8 +42,12 @@ public class Institution extends User {
     this.commentFactory = commentFactory;
   }
 
-  public void createEvent(String eventName) {
-    Event event = eventFactory.createEvent(eventName);
+  public void createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
+    Event event = eventFactory.createEvent(eventName, hashtag, dateTime, location);
+    addEvent(event);
+  }
+
+  public void addEvent(Event event) {
     createdEvents.add(event);
   }
 
@@ -63,7 +70,7 @@ public class Institution extends User {
   }
 
   public void setCreatedEvents(Set<Event> createdEvents) {
-    this.createdEvents = createdEvents;
+    this.createdEvents = new HashSet<>(createdEvents);
   }
 
   public Set<String> getGenres(){
@@ -71,6 +78,14 @@ public class Institution extends User {
   }
 
   public void setGenres(Set<String> genres) {
-    this.genres = genres;
+    this.genres = new HashSet<>(genres);
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }
