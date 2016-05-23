@@ -22,7 +22,7 @@ public class InstitutionTest {
     eventFactory = mock(EventFactory.class);
     postFactory = mock(PostFactory.class);
     commentFactory = mock(CommentFactory.class);
-    institution = new Institution("ICE Congress Centre", eventFactory, postFactory, commentFactory);
+    institution = new Institution("ICE Congress Centre", 1, eventFactory, postFactory, commentFactory);
   }
 
   @Test

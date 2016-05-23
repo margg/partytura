@@ -15,10 +15,17 @@ public class Post {
   private LocalDateTime dateTime;
   private List<Comment> comments = new ArrayList<>();
 
+  public Post() {}
+
   public Post(String content, User author, LocalDateTime dateTime) {
+    this(content, author, dateTime, new ArrayList<>());
+  }
+
+  public Post(String content, User author, LocalDateTime dateTime, List<Comment> comments) {
     this.content = content;
     this.author = author;
     this.dateTime = dateTime;
+    this.comments = new ArrayList<>(comments);
   }
 
   public void addComment(Comment comment) {

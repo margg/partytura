@@ -17,15 +17,21 @@ public class Event {
   private String hashtag;
   private LocalDateTime dateTime;
   private EventLocation location;
-  private List<Post> posts = new ArrayList<>();
+  private List<Post> posts;
 
-  public Event() {}
+  public Event() {
+  }
 
   public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
+    this(eventName, hashtag, dateTime, location, new ArrayList<>());
+  }
+
+  public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location, List<Post> posts) {
     this.eventName = eventName;
     this.hashtag = hashtag;
     this.dateTime = dateTime;
     this.location = location;
+    this.posts = posts;
   }
 
   public void addPost(Post post) {

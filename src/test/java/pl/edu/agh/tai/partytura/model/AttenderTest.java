@@ -26,7 +26,7 @@ public class AttenderTest {
     postFactory = mock(PostFactory.class);
     commentFactory = mock(CommentFactory.class);
     institution = mock(Institution.class);
-    attender = new Attender("wikla", postFactory, commentFactory);
+    attender = new Attender("wikla", 1, postFactory, commentFactory);
   }
 
   @Test

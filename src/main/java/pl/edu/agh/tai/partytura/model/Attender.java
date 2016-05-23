@@ -27,21 +27,27 @@ public class Attender extends User {
   private CommentFactory commentFactory;
 
   @DBRef
-  private Set<Institution> followedInstitutions = new HashSet<>();
+  private Set<Institution> followedInstitutions;
 
   @DBRef
-  private Set<Event> joinedEvents = new HashSet<>();
+  private Set<Event> joinedEvents;
 
   public Attender() {}
 
-  public Attender(String username) {
-    super(username);
+  public Attender(String username, long twitterId) {
+    this(username, twitterId, new HashSet<>(), new HashSet<>());
   }
 
-  public Attender(String username, PostFactory postFactory, CommentFactory commentFactory) {
-    super(username);
+  public Attender(String username, long twitterId, PostFactory postFactory, CommentFactory commentFactory) {
+    this(username, twitterId, new HashSet<>(), new HashSet<>());
     this.postFactory = postFactory;
     this.commentFactory = commentFactory;
+  }
+
+  public Attender(String username, long twitterId, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
+    super(username, twitterId);
+    this.followedInstitutions = followedInstitutions;
+    this.joinedEvents = joinedEvents;
   }
 
   @Override

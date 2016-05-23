@@ -2,6 +2,8 @@ package pl.edu.agh.tai.partytura.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
 import pl.edu.agh.tai.partytura.model.factories.EventFactory;
@@ -18,28 +20,34 @@ public class Institution extends User {
   private String id;
 
   @Autowired
+  @Transient
   private EventFactory eventFactory;
 
   @Autowired
+  @Transient
   private PostFactory postFactory;
 
   @Autowired
   private CommentFactory commentFactory;
 
-  private Set<Event> createdEvents = new HashSet<>();
-  private Set<String> genres = new HashSet<>();
+  private Set<String> genres;
+
+  @DBRef
+  private Set<Event> createdEvents;
 
   public Institution() {}
 
-  public Institution(String username) {
-    super(username);
-  }
-
-  public Institution(String username, EventFactory eventFactory, PostFactory postFactory, CommentFactory commentFactory) {
-    super(username);
+  public Institution(String username, long twitterId, EventFactory eventFactory, PostFactory postFactory, CommentFactory commentFactory) {
+    this(username, twitterId, new HashSet<>(), new HashSet<>());
     this.eventFactory = eventFactory;
     this.postFactory = postFactory;
     this.commentFactory = commentFactory;
+  }
+
+  public Institution(String username, long twitterId, Set<String> genres, Set<Event> createdEvents) {
+    super(username, twitterId);
+    this.genres = new HashSet<>(genres);
+    this.createdEvents = new HashSet<>(createdEvents);
   }
 
   public void createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
