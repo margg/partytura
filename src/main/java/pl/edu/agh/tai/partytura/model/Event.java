@@ -62,4 +62,8 @@ public class Event {
   public EventLocation getLocation() {
     return location;
   }
+
+  public String getId() {
+    return id;
+  }
 }

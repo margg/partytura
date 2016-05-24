@@ -66,9 +66,7 @@ public class HomeController {
       for (Institution institution : institutions) {
         attender.follow(institution);
       }
-
       attenderRepository.save(attender);
-
     } else {
       if (attenders.size() > 1) {
         // TODO: log

@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Hello Twitter</title>
+    <title th:text="${twitterProfile.name}"> Dashboard</title>
 </head>
 <body>
 <h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
@@ -9,8 +9,10 @@
 <!--<ul>
     <li th:each="friend:${friends}" th:text="${friend.name}">Friend</li>
 </ul>-->
-<ul>
-    <li th:each="event:${attender.joinedEvents}" th:text="${event.eventName}">Event</li>
+<ul th:each="event:${attender.joinedEvents}">
+    <li>
+        <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
+    </li>
 </ul>
 
 <h4>These are your followed institutions:</h4>

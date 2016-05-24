@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${event.eventName}">Event</title>
+</head>
+<body>
+<h3><span th:text="${event.eventName}">Event</span></h3>
+<!--
+private String eventName;
+private String hashtag;
+private LocalDateTime dateTime;
+private EventLocation location;
+private List<Post> posts;
+    -->
+
+<h4>Hashtag: <span th:text="${event.hashtag}"></span></h4>
+<h4>Date: <span th:text="${event.dateTime}"></span></h4>
+<h4>Location: <span th:text="${event.location.location}"></span></h4>
+
+<h4>Posts: </h4>
+<ul th:each="post:${event.posts}">
+    <table>
+        <tbody>
+        <tr>
+            <td th:text="${post.dateTime}"></td>
+            <td th:text="${post.author.username}"></td>
+            <td th:text="${post.content}"></td>
+        </tr>
+        <tr>
+            <td><h5>Comments</h5></td>
+        </tr>
+        <tr th:each="comment : ${post.comments}">
+            <td th:text="${comment.dateTime}"></td>
+            <td th:text="${comment.author.username}"></td>
+            <td th:text="${comment.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>-------------------------</p>
+</ul>
+
+<p>Add post:</p>
+<form action="#" th:action="@{/newPost(eventId=${event.id})}" th:object="${post}" method="post">
+    <input type="text" id="content" name="content" th:value="*{content}" />
+    <input type="submit" />
+</form>
+
+
+</body>
+</html>
