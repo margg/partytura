@@ -18,15 +18,11 @@ public class AttenderTest {
 
   private Attender attender;
   private Institution institution;
-  private PostFactory postFactory;
-  private CommentFactory commentFactory;
 
   @Before
   public void setUp() throws Exception {
-    postFactory = mock(PostFactory.class);
-    commentFactory = mock(CommentFactory.class);
     institution = mock(Institution.class);
-    attender = new Attender("wikla", 1, postFactory, commentFactory);
+    attender = new Attender("wikla", 1);
   }
 
   @Test
@@ -96,36 +92,4 @@ public class AttenderTest {
     //then
     Truth.assertThat(attender.getJoinedEvents()).containsExactly(event);
   }
-
-  @Test
-  public void shouldBeAbleToAddPostToEvent() throws Exception {
-    // given
-    Event event = mock(Event.class);
-    Post post = mock(Post.class);
-    String content = "Post content";
-    when(postFactory.createPost(content, attender)).thenReturn(post);
-
-    // when
-    attender.addPost(content, event);
-
-    //then
-    verify(event).addPost(post);
-  }
-
-  @Test
-  public void shouldBeAbleToAddCommentToPost() throws Exception {
-    // given
-    Post post = mock(Post.class);
-    String commentContent = "Comment";
-    Comment comment = new Comment(commentContent, attender, LocalDateTime.of(2016, 6, 10, 10, 0));
-    when(commentFactory.createComment(commentContent, attender)).thenReturn(comment);
-
-    // when
-    attender.addComment(commentContent, post);
-
-    //then
-    verify(post).addComment(comment);
-  }
-
-
 }

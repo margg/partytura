@@ -1,13 +1,15 @@
 package pl.edu.agh.tai.partytura.model;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Component;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Document
 public class Event {
 
   @Id
@@ -19,9 +21,7 @@ public class Event {
   private EventLocation location;
   private List<Post> posts;
 
-  public Event() {
-  }
-
+  @PersistenceConstructor
   public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
     this(eventName, hashtag, dateTime, location, new ArrayList<>());
   }
@@ -42,6 +42,7 @@ public class Event {
     return posts;
   }
 
+  @Required
   public void setPosts(List<Post> posts) {
     this.posts = new ArrayList<>(posts);
   }
@@ -50,39 +51,15 @@ public class Event {
     return eventName;
   }
 
-  public void setEventName(String eventName) {
-    this.eventName = eventName;
-  }
-
   public String getHashtag() {
     return hashtag;
-  }
-
-  public void setHashtag(String hashtag) {
-    this.hashtag = hashtag;
   }
 
   public LocalDateTime getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(LocalDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
-
   public EventLocation getLocation() {
     return location;
-  }
-
-  public void setLocation(EventLocation location) {
-    this.location = location;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 }

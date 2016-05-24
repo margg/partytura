@@ -6,14 +6,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.edu.agh.tai.partytura.model.*;
-import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
-import pl.edu.agh.tai.partytura.model.factories.EventFactory;
-import pl.edu.agh.tai.partytura.model.factories.PostFactory;
 import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
 import pl.edu.agh.tai.partytura.persistence.EventRepository;
 import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @SpringBootApplication
 public class PartyturaWebappApplication implements CommandLineRunner {
@@ -38,14 +36,14 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     institutionRepository.deleteAll();
     eventRepository.deleteAll();
 
-    Attender john = attenderRepository.insert(createAttender("john", 1, new PostFactory(), new CommentFactory()));
-    Attender stanley = attenderRepository.insert(createAttender("stanley", 2, new PostFactory(), new CommentFactory()));
-    Attender keira = attenderRepository.insert(createAttender("keira", 3, new PostFactory(), new CommentFactory()));
-    Attender aisha = attenderRepository.insert(createAttender("aisha", 4, new PostFactory(), new CommentFactory()));
+    Attender john = attenderRepository.insert(createAttender("john", 1));
+    Attender stanley = attenderRepository.insert(createAttender("stanley", 2));
+    Attender keira = attenderRepository.insert(createAttender("keira", 3));
+    Attender aisha = attenderRepository.insert(createAttender("aisha", 4));
 
-    Institution iceKrakow = institutionRepository.insert(createInstitution("icekrakow", 5, new EventFactory(), new PostFactory(), new CommentFactory()));
-    Institution ckrotunda = institutionRepository.insert(createInstitution("ckrotunda", 6, new EventFactory(), new PostFactory(), new CommentFactory()));
-    Institution bagatela = institutionRepository.insert(createInstitution("teatrbagatela", 7, new EventFactory(), new PostFactory(), new CommentFactory()));
+    Institution iceKrakow = institutionRepository.insert(createInstitution("icekrakow", 5));
+    Institution ckrotunda = institutionRepository.insert(createInstitution("ckrotunda", 6));
+    Institution bagatela = institutionRepository.insert(createInstitution("teatrbagatela", 7));
 
     Event elvislives = eventRepository.insert(createEvent("Elvis lives!", "elvislives",
             LocalDateTime.of(2016, 7, 10, 18, 0), new EventLocation("ICE Kraków")));
@@ -76,10 +74,10 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     aisha.joinEvent(luckychops);
 
     // create some posts and comments
-    keira.addPost("Elvis is the King!", elvislives);
-    Post keirasPost = elvislives.getPosts().get(0);
-
-    stanley.addComment("Yup!", keirasPost);
+    // TODO: get posts and comments from a service
+    Post post = new Post("Elvis is the King!", keira, LocalDateTime.now());
+    elvislives.addPost(post);
+    post.addComment(new Comment("Yup!", stanley, LocalDateTime.now()));
 
     eventRepository.save(ImmutableList.of(elvislives, hanszimmer, luckychops));
     attenderRepository.save(ImmutableList.of(john, stanley, keira, aisha));
@@ -91,14 +89,12 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     return new Event(eventName, hashtag, dateTime, location);
   }
 
-  private Institution createInstitution(String name, long twitterId, EventFactory eventFactory,
-                                        PostFactory postFactory, CommentFactory commentFactory) {
-    return new Institution(name, twitterId, eventFactory, postFactory, commentFactory);
+  private Institution createInstitution(String name, long twitterId) {
+    return new Institution(name, twitterId);
   }
 
-  private Attender createAttender(String username, long twitterId, PostFactory postFactory,
-                                  CommentFactory commentFactory) {
-    return new Attender(username, twitterId, postFactory, commentFactory);
+  private Attender createAttender(String username, long twitterId) {
+    return new Attender(username, twitterId, new HashSet<>(), new HashSet<>());
   }
 
 }

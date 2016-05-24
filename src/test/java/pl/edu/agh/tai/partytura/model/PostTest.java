@@ -10,11 +10,11 @@ import static org.mockito.Mockito.mock;
 public class PostTest {
 
   @Test
-  public void shouldEnableAddingComments() throws Exception {
+  public void shouldAllowToAddComments() throws Exception {
     // given
     User user = mock(User.class);
-    Comment comment = new Comment("Comment content", user, LocalDateTime.of(2016, 6, 10, 10, 0));
     Post post = new Post("Post content", user,  LocalDateTime.of(2016, 6, 10, 11, 0));
+    Comment comment = mock(Comment.class);
 
     // when
     post.addComment(comment);
