@@ -37,7 +37,7 @@ private List<Post> posts;
         <tr>
             <td>
                 <p>Add comment:</p>
-                <form action="#" th:action="@{/newComment(eventId=${event.id}, postId=${post.id})}" th:object="${comment}" method="post">
+                <form action="#" th:action="@{/event/{eventId}/post/{postId}/newComment(eventId=${event.id}, postId=${post.id})}" th:object="${comment}" method="post">
                     <input type="text" id="commentContent" name="content" th:value="*{content}" />
                     <input type="submit" />
                 </form>
@@ -49,7 +49,7 @@ private List<Post> posts;
 </ul>
 
 <p>Add post:</p>
-<form action="#" th:action="@{/newPost(eventId=${event.id})}" th:object="${post}" method="post">
+<form action="#" th:action="@{/event/{eventId}/newPost(eventId=${event.id})}" th:object="${post}" method="post">
     <input type="text" id="content" name="content" th:value="*{content}" />
     <input type="submit" />
 </form>

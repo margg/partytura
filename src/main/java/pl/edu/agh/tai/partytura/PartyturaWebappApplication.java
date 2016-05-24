@@ -34,7 +34,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-
+/*
     attenderRepository.deleteAll();
     institutionRepository.deleteAll();
     eventRepository.deleteAll();
@@ -91,6 +91,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     eventRepository.save(ImmutableList.of(elvislives, hanszimmer, luckychops));
     attenderRepository.save(ImmutableList.of(john, stanley, keira, aisha));
     institutionRepository.save(ImmutableList.of(iceKrakow, ckrotunda, bagatela));
+*/
 
   }
 

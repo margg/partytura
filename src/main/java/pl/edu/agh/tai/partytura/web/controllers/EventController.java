@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
+@RequestMapping(path = "/event/{eventId}")
 public class EventController {
 
   private Twitter twitter;
@@ -41,8 +42,8 @@ public class EventController {
     this.connectionRepository = connectionRepository;
   }
 
-  @RequestMapping(path = "/event/{id}", method = RequestMethod.GET)
-  public String eventHomePage(@PathVariable("id") String eventId, Model model) {
+  @RequestMapping( method = RequestMethod.GET)
+  public String eventHomePage(@PathVariable("eventId") String eventId, Model model) {
     // TODO: check permissions
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
@@ -59,7 +60,7 @@ public class EventController {
 
   @RequestMapping(path = "/newPost", method = RequestMethod.POST)
   public String addPostToEvent(@ModelAttribute Post post,
-                               @RequestParam("eventId") String eventId, Model model) {
+                               @PathVariable("eventId") String eventId, Model model) {
     // TODO: check permissions
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
@@ -78,13 +79,13 @@ public class EventController {
     eventRepository.save(event);
 
     model.addAttribute("event", event);
-    return "redirect:event/" + eventId;
+    return "redirect:/event/" + eventId;
   }
 
-  @RequestMapping(path = "/newComment", method = RequestMethod.POST)
+  @RequestMapping(path = "/post/{postId}/newComment", method = RequestMethod.POST)
   public String addCommentToPost(@ModelAttribute Comment comment,
-                                 @RequestParam("eventId") String eventId,
-                                 @RequestParam("postId") String postId, Model model) {
+                                 @PathVariable("eventId") String eventId,
+                                 @PathVariable("postId") String postId, Model model) {
     // TODO: check permissions
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
@@ -105,7 +106,7 @@ public class EventController {
     Event event = eventRepository.findOne(eventId);
 
     model.addAttribute("event", event);
-    return "redirect:event/" + eventId;
+    return "redirect:/event/" + eventId;
   }
 
   private User getUser(long id, String username) {
