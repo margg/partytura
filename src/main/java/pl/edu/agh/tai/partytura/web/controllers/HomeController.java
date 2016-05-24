@@ -15,7 +15,6 @@ import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
 import pl.edu.agh.tai.partytura.persistence.EventRepository;
 import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 
-import javax.inject.Inject;
 import java.util.List;
 
 @Controller
@@ -35,7 +34,7 @@ public class HomeController {
   @Autowired
   private InstitutionRepository institutionRepository;
 
-  @Inject
+  @Autowired
   public HomeController(Twitter twitter, ConnectionRepository connectionRepository) {
     this.twitter = twitter;
     this.connectionRepository = connectionRepository;
