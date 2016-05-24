@@ -1,15 +1,21 @@
 package pl.edu.agh.tai.partytura.model;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Document
 public class Post {
+
+  @Id
+  private String id;
 
   @NotNull
   private String content;
@@ -17,6 +23,8 @@ public class Post {
   @DBRef
   private User author;
   private LocalDateTime dateTime;
+
+  @DBRef
   private List<Comment> comments = new ArrayList<>();
 
   public Post() {}
@@ -68,5 +76,9 @@ public class Post {
   @Required
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+  }
+
+  public String getId() {
+    return id;
   }
 }

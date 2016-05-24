@@ -6,9 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.edu.agh.tai.partytura.model.*;
-import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
-import pl.edu.agh.tai.partytura.persistence.EventRepository;
-import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
+import pl.edu.agh.tai.partytura.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +22,12 @@ public class PartyturaWebappApplication implements CommandLineRunner {
   @Autowired
   private EventRepository eventRepository;
 
+  @Autowired
+  private PostRepository postRepository;
+
+  @Autowired
+  private CommentRepository commentRepository;
+
   public static void main(String[] args) {
     SpringApplication.run(PartyturaWebappApplication.class, args);
   }
@@ -34,6 +38,8 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     attenderRepository.deleteAll();
     institutionRepository.deleteAll();
     eventRepository.deleteAll();
+    postRepository.deleteAll();
+    commentRepository.deleteAll();
 
     Attender john = attenderRepository.insert(createAttender("john", 1));
     Attender stanley = attenderRepository.insert(createAttender("stanley", 2));
@@ -74,10 +80,14 @@ public class PartyturaWebappApplication implements CommandLineRunner {
 
     // create some posts and comments
     // TODO: get posts and comments from a service
-    Post post = new Post("Elvis is the King!", keira, LocalDateTime.now());
-    elvislives.addPost(post);
-    post.addComment(new Comment("Yup!", stanley, LocalDateTime.now()));
+    Post post = postRepository.insert(new Post("Elvis is the King!", keira, LocalDateTime.now()));
+    Comment comment = commentRepository.insert(new Comment("Yup!", stanley, LocalDateTime.now()));
+    post.addComment(comment);
 
+    elvislives.addPost(post);
+
+    postRepository.save(post);
+    commentRepository.save(comment);
     eventRepository.save(ImmutableList.of(elvislives, hanszimmer, luckychops));
     attenderRepository.save(ImmutableList.of(john, stanley, keira, aisha));
     institutionRepository.save(ImmutableList.of(iceKrakow, ckrotunda, bagatela));

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.tai.partytura.model.*;
-import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
-import pl.edu.agh.tai.partytura.persistence.EventRepository;
-import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
+import pl.edu.agh.tai.partytura.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +30,12 @@ public class EventController {
   private InstitutionRepository institutionRepository;
 
   @Autowired
+  private PostRepository postRepository;
+
+  @Autowired
+  private CommentRepository commentRepository;
+
+  @Autowired
   public EventController(Twitter twitter, ConnectionRepository connectionRepository) {
     this.twitter = twitter;
     this.connectionRepository = connectionRepository;
@@ -49,11 +53,13 @@ public class EventController {
     model.addAttribute("user", user);
     model.addAttribute("event", eventRepository.findOne(eventId));
     model.addAttribute("post", new Post("", user, LocalDateTime.now()));
+    model.addAttribute("comment", new Comment("", user, LocalDateTime.now()));
     return "event";
   }
 
   @RequestMapping(path = "/newPost", method = RequestMethod.POST)
-  public String addPostToEvent(@ModelAttribute Post post, @RequestParam("eventId") String eventId, Model model) {
+  public String addPostToEvent(@ModelAttribute Post post,
+                               @RequestParam("eventId") String eventId, Model model) {
     // TODO: check permissions
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
@@ -61,11 +67,42 @@ public class EventController {
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
     User user = getUser(userProfile.getId(), userProfile.getName());
 
+    Post p = postRepository.insert(post);
+
     Event event = eventRepository.findOne(eventId);
-    post.setDateTime(LocalDateTime.now());
-    post.setAuthor(user);
-    event.addPost(post);
+    p.setDateTime(LocalDateTime.now());
+    p.setAuthor(user);
+    event.addPost(p);
+
+    postRepository.save(p);
     eventRepository.save(event);
+
+    model.addAttribute("event", event);
+    return "redirect:event/" + eventId;
+  }
+
+  @RequestMapping(path = "/newComment", method = RequestMethod.POST)
+  public String addCommentToPost(@ModelAttribute Comment comment,
+                                 @RequestParam("eventId") String eventId,
+                                 @RequestParam("postId") String postId, Model model) {
+    // TODO: check permissions
+    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+      return "redirect:/connect/twitter";
+    }
+    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
+    User user = getUser(userProfile.getId(), userProfile.getName());
+
+    Comment c = commentRepository.insert(comment);
+
+    Post post = postRepository.findOne(postId);
+    c.setDateTime(LocalDateTime.now());
+    c.setAuthor(user);
+    post.addComment(c);
+
+    commentRepository.save(c);
+    postRepository.save(post);
+
+    Event event = eventRepository.findOne(eventId);
 
     model.addAttribute("event", event);
     return "redirect:event/" + eventId;
