@@ -11,7 +11,6 @@ import pl.edu.agh.tai.partytura.persistence.EventRepository;
 import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 
 @SpringBootApplication
 public class PartyturaWebappApplication implements CommandLineRunner {
@@ -94,7 +93,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
   }
 
   private Attender createAttender(String username, long twitterId) {
-    return new Attender(username, twitterId, new HashSet<>(), new HashSet<>());
+    return new Attender(username, twitterId);
   }
 
 }
