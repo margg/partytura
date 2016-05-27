@@ -3,11 +3,13 @@ define([
     'underscore',
     'backbone',
     'views/main-page',
-    'views/dashboard'
-], function ($, _, Backbone, MainPageView, DashboardView) {
+    'views/dashboard',
+    'views/twitter'
+], function ($, _, Backbone, MainPageView, DashboardView, TwitterView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
-            '!/dashboard': 'dashboard',
+            '!/connect/twitter': 'dashboard',
+            '!/login': 'twitter',
             '!': 'mainPage'
         },
 
@@ -23,7 +25,14 @@ define([
                 el: $('.sub-cont')
             });
             dashboardView.render();
-        }
+        },
+
+        twitter: function () {
+            var twitterView = new TwitterView({
+                el: $('.sub-cont')
+            });
+            twitterView.render();
+        },
 
     });
 
