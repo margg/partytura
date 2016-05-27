@@ -9,6 +9,7 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             '!/connect/twitter': 'dashboard',
+            '!/dashboard': 'dashboard',
             '!/login': 'twitter',
             '!': 'mainPage'
         },
@@ -32,7 +33,7 @@ define([
                 el: $('.sub-cont')
             });
             twitterView.render();
-        },
+        }
 
     });
 

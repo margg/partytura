@@ -7,6 +7,7 @@ define([
 ], function($, _, Backbone, twitterConnectTemplate, twitterConnectedTemplate){
     var TwitterView = Backbone.View.extend({
 
+        //TODO check if already connected
         render: function(){
             this.$el.html(_.template(twitterConnectTemplate));
         }
