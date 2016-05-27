@@ -7,7 +7,7 @@ define([
 ], function($, _, Backbone, Attender, dashboardTemplate){
     var DashboardView = Backbone.View.extend({
 
-        model: Attender,
+        /*model: Attender,
 
         initialize: function() {
             this.model = new Attender({username: "veecla"});
@@ -26,6 +26,10 @@ define([
             this.$el.html(_.template(dashboardTemplate, {
                 model: this.model
             }));
+        }*/
+
+        render: function() {
+            this.$el.html(_.template(dashboardTemplate));
         }
     });
     return DashboardView;
