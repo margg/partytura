@@ -7,30 +7,26 @@ define([
 ], function($, _, Backbone, Attender, dashboardTemplate){
     var DashboardView = Backbone.View.extend({
 
-        /*model: Attender,
 
         initialize: function() {
             this.model = new Attender({username: "veecla"});
         },
 
         render: function(){
-
-            this.model.fetch({
-                success: function (model, response, options) {
+            //TODO: commented because we don't get URL from Spring yet
+            /*this.model.fetch({
+                success: function (model, response, options) {*/
                     this.renderView();
-                }.bind(this)
-            });
+            /*    }.bind(this)
+            });*/
         },
 
         renderView: function() {
             this.$el.html(_.template(dashboardTemplate, {
-                model: this.model
+                attender: this.model
             }));
-        }*/
-
-        render: function() {
-            this.$el.html(_.template(dashboardTemplate));
         }
+
     });
     return DashboardView;
 });

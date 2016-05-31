@@ -3,15 +3,20 @@ define([
     'underscore',
     'backbone'
 ], function($, _, Backbone) {
-    var User = Backbone.Model.extend({
+    var Attender = Backbone.Model.extend({
         defaults: {
             'username': '',
             'twitterId': '',
             'followedInstitutions': null,
             'joinedEvents': null
+        },
+
+        url: function() {
+            //todo: change url
+            return "/api/me";
         }
     });
 
-    return User;
+    return Attender;
 
 });
