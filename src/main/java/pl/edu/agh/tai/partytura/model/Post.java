@@ -1,11 +1,13 @@
 package pl.edu.agh.tai.partytura.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.edu.agh.tai.partytura.web.View;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -16,18 +18,22 @@ import java.util.List;
 public class Post {
 
   @Id
+  @JsonView(View.Event.class)
   private String id;
 
   @NotNull
+  @JsonView(View.Event.class)
   private String content;
 
   @DBRef
   @JsonBackReference
   private User author;
 
+  @JsonView(View.Event.class)
   private LocalDateTime dateTime;
 
   @DBRef
+  @JsonView(View.Event.class)
   private List<Comment> comments = new ArrayList<>();
 
   public Post() {}

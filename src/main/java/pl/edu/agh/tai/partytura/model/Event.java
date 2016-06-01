@@ -16,21 +16,23 @@ import java.util.List;
 public class Event {
 
   @Id
+  @JsonView(View.EventBase.class)
   private String id;
 
-  @JsonView(View.Attender.class)
+  @JsonView(View.EventBase.class)
   private String eventName;
 
-  @JsonView(View.Attender.class)
+  @JsonView(View.EventBase.class)
   private String hashtag;
 
-  @JsonView(View.Attender.class)
+  @JsonView(View.EventBase.class)
   private LocalDateTime dateTime;
 
-  @JsonView(View.Attender.class)
+  @JsonView(View.EventBase.class)
   private EventLocation location;
 
   @DBRef
+  @JsonView(View.Event.class)
   private List<Post> posts;
 
   @PersistenceConstructor

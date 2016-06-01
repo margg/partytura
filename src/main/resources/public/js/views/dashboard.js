@@ -9,7 +9,8 @@ define([
 
 
         initialize: function() {
-            this.model = new Attender({ id: ""});
+            // this.model = new Attender({ id: "574e9ae58904fd27c9e9914c"});
+            this.model = new Attender({ id: "574ddfa7890465dbc5004c04"});
         },
 
         render: function(){

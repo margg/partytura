@@ -18,10 +18,12 @@ public class Comment {
 
   @DBRef
   @JsonBackReference
-  @JsonView(View.Comment.class)
   private User author;
 
+  @JsonView(View.Event.class)
   private String content;
+
+  @JsonView(View.Event.class)
   private LocalDateTime dateTime;
 
   public Comment() {}

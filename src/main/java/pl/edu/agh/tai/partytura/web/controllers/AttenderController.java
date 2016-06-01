@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-//@RequestMapping(path = "/api")
 public class AttenderController {
 
   private Twitter twitter;

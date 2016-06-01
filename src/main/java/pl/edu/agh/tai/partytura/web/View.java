@@ -5,7 +5,7 @@ public class View {
   public interface User {
   }
 
-  public interface Attender extends User {
+  public interface Attender extends User, EventBase {
   }
 
   public interface Institution extends User {
@@ -13,4 +13,8 @@ public class View {
 
   public interface Comment {
   }
+
+  public interface EventBase { }
+
+  public interface Event extends EventBase { }
 }

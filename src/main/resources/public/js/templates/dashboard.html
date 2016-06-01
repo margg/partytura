@@ -1,6 +1,18 @@
 <h3>Hello, <span><%=attender.get('username')%></span>!</h3>
 
-<div>
-    Joined events:
-    <span><%=attender.get('joinedEvents')[0].eventName%></span>
+<div class="cont">
+    Your events:
+
+    <div class="list-group">
+        <%
+        var events = attender.get('joinedEvents');
+        for (event of events){
+        %>
+        <a href="#!/event/<%= event.id %>" class="list-group-item">
+            <h4 class="list-group-item-heading"><%= event.eventName %> #<%= event.hashtag %></h4>
+            <p class="list-group-item-text"> <%= event.location.location %> </p>
+        </a>
+        <% ;} %>
+    </div>
+
 </div>
