@@ -1,5 +1,6 @@
 package pl.edu.agh.tai.partytura.web.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Twitter;
@@ -9,12 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
+import pl.edu.agh.tai.partytura.web.View;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/event/{eventId}")
 public class EventController {
 
   private Twitter twitter;
@@ -42,7 +43,22 @@ public class EventController {
     this.connectionRepository = connectionRepository;
   }
 
-  @RequestMapping( method = RequestMethod.GET)
+
+
+
+  @JsonView(View.Attender.class)
+  @RequestMapping(path = "/api/event/{eventId}", method = RequestMethod.GET, produces = "application/json")
+  public @ResponseBody Event getEvent(@PathVariable("eventId") String eventId, Model model) {
+    // TODO: check permissions
+/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+      return "redirect:/connect/twitter";
+    }*/
+
+    return eventRepository.findOne(eventId);
+  }
+
+  //
+  @RequestMapping(path = "/event/{eventId}", method = RequestMethod.GET)
   public String eventHomePage(@PathVariable("eventId") String eventId, Model model) {
     // TODO: check permissions
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
@@ -58,7 +74,7 @@ public class EventController {
     return "event";
   }
 
-  @RequestMapping(path = "/newPost", method = RequestMethod.POST)
+  @RequestMapping(path = "/event/{eventId}/newPost", method = RequestMethod.POST)
   public String addPostToEvent(@ModelAttribute Post post,
                                @PathVariable("eventId") String eventId, Model model) {
     // TODO: check permissions
@@ -82,7 +98,7 @@ public class EventController {
     return "redirect:/event/" + eventId;
   }
 
-  @RequestMapping(path = "/post/{postId}/newComment", method = RequestMethod.POST)
+  @RequestMapping(path = "/event/{eventId}/post/{postId}/newComment", method = RequestMethod.POST)
   public String addCommentToPost(@ModelAttribute Comment comment,
                                  @PathVariable("eventId") String eventId,
                                  @PathVariable("postId") String postId, Model model) {

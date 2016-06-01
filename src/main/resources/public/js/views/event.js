@@ -2,15 +2,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/attender',
-    'text!templates/dashboard.html'
-], function($, _, Backbone, Attender, dashboardTemplate){
-    var DashboardView = Backbone.View.extend({
-
+    'models/event',
+    'text!templates/event.html'
+], function($, _, Backbone, Event, eventTemplate){
+    var EventView = Backbone.View.extend({
 
         initialize: function() {
-            // this.model = new Attender({ id: "574e9ae58904fd27c9e9914c"});
-            this.model = new Attender({ id: "574ddfa7890465dbc5004c04"});
+            this.model = new Event({ id: this.id});
+            // this.model = new Event({ id: "574ddfa7890465dbc5004c08"});
         },
 
         render: function(){
@@ -22,11 +21,11 @@ define([
         },
 
         renderView: function() {
-            this.$el.html(_.template(dashboardTemplate, {
+            this.$el.html(_.template(eventTemplate, {
                 model: this.model
             }));
         }
 
     });
-    return DashboardView;
+    return EventView;
 });
