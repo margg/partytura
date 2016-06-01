@@ -1,9 +1,12 @@
 package pl.edu.agh.tai.partytura.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.edu.agh.tai.partytura.web.View;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +17,8 @@ public class Comment {
   private String id;
 
   @DBRef
+  @JsonBackReference
+  @JsonView(View.Comment.class)
   private User author;
 
   private String content;

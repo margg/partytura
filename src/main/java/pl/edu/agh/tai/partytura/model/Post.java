@@ -1,5 +1,6 @@
 package pl.edu.agh.tai.partytura.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -21,7 +22,9 @@ public class Post {
   private String content;
 
   @DBRef
+  @JsonBackReference
   private User author;
+
   private LocalDateTime dateTime;
 
   @DBRef

@@ -13,7 +13,7 @@ define([
 
         url: function() {
             //todo: change url
-            return "/api/me";
+            return "/api/attender/" + this.get('id');
         }
     });
 

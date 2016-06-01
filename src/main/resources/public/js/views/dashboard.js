@@ -9,16 +9,15 @@ define([
 
 
         initialize: function() {
-            this.model = new Attender({username: "veecla"});
+            this.model = new Attender({ id: ""});
         },
 
         render: function(){
-            //TODO: commented because we don't get URL from Spring yet
-            /*this.model.fetch({
-                success: function (model, response, options) {*/
+            this.model.fetch({
+                success: function (model, response, options) {
                     this.renderView();
-            /*    }.bind(this)
-            });*/
+                }.bind(this)
+            });
         },
 
         renderView: function() {

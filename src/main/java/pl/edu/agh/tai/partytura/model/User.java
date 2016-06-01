@@ -1,7 +1,11 @@
 package pl.edu.agh.tai.partytura.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pl.edu.agh.tai.partytura.web.View;
+
 public abstract class User {
 
+  @JsonView(View.User.class)
   private String username;
 
   private long twitterId;
