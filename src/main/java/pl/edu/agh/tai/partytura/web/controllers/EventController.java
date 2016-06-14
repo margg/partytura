@@ -64,6 +64,7 @@ public class EventController {
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
     }
+
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
     User user = getUser(userProfile.getId(), userProfile.getName());
 
