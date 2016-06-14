@@ -7,7 +7,7 @@
 
 <h4>These are your upcoming events:</h4>
 
-<ul th:each="event:${attender.joinedEvents}">
+<ul th:each="event:${user.joinedEvents}">
     <li>
         <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
     </li>
@@ -15,7 +15,7 @@
 
 <h4>These are your followed institutions:</h4>
 <ul>
-    <li th:each="institution:${attender.followedInstitutions}" th:text="${institution.username}">Event</li>
+    <li th:each="institution:${user.followedInstitutions}" th:text="${institution.username}">Event</li>
 </ul>
 
 </body>

@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="${twitterProfile.name}"> Dashboard</title>
+</head>
+<body>
+<h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
+
+<h4>These are your events:</h4>
+
+<ul th:each="event:${user.createdEvents}">
+    <li>
+        <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
+    </li>
+</ul>
+
+<h4>Genres:</h4>
+<ul>
+    <li th:each="genre:${user.genres}" th:text="${genre}">Genre</li>
+</ul>
+
+</body>
+</html>

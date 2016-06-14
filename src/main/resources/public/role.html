@@ -14,7 +14,12 @@
 <div class="cont">
     <div class="main-header" id="main-logo">Partytura</div>
 
-    Click <a href="/dashboard">here</a> to log in.
+    Join as an
+    <form action="/dashboard" method="post">
+        <input type="radio" name="role" value="Attender"/> Attender<br/>
+        <input type="radio" name="role" value="Institution"/> Institution<br/>
+        <input type="submit" value="Join"/>
+    </form>
 
     <div class="sub-cont"></div>
     <hr/>
