@@ -18,7 +18,7 @@ import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/#!")
 public class HomeController {
 
   private Twitter twitter;
@@ -42,10 +42,10 @@ public class HomeController {
 
   @RequestMapping(method = RequestMethod.GET)
   public String homePage(Model model) {
-    return "main";
+    return "index";
   }
 
-  @RequestMapping(path = "dashboard", method = RequestMethod.GET)
+  @RequestMapping(path = "/dashboard", method = RequestMethod.GET)
   public String userHomePage(Model model) {
     if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
@@ -77,7 +77,7 @@ public class HomeController {
 
     model.addAttribute("twitterProfile", userProfile);
     model.addAttribute("attender", attender);
-    return "dashboard";
+    return "/dashboard";
   }
 
 }

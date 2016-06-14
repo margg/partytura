@@ -1,10 +1,12 @@
 package pl.edu.agh.tai.partytura.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.edu.agh.tai.partytura.web.View;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,14 +16,23 @@ import java.util.List;
 public class Event {
 
   @Id
+  @JsonView(View.EventBase.class)
   private String id;
 
+  @JsonView(View.EventBase.class)
   private String eventName;
+
+  @JsonView(View.EventBase.class)
   private String hashtag;
+
+  @JsonView(View.EventBase.class)
   private LocalDateTime dateTime;
+
+  @JsonView(View.EventBase.class)
   private EventLocation location;
 
   @DBRef
+  @JsonView(View.Event.class)
   private List<Post> posts;
 
   @PersistenceConstructor

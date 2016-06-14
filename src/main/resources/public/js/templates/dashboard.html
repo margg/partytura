@@ -1,0 +1,18 @@
+<h3>Hello, <span><%=model.get('username')%></span>!</h3>
+
+<div class="cont">
+    Your events:
+
+    <div class="list-group">
+        <%
+        var events = model.get('joinedEvents');
+        for (var event of events){
+        %>
+        <a href="#!/event/<%= event.id %>" class="list-group-item">
+            <h4 class="list-group-item-heading"><%= event.eventName %> #<%= event.hashtag %></h4>
+            <p class="list-group-item-text"> <%= event.location.location %> </p>
+        </a>
+        <% ;} %>
+    </div>
+
+</div>
