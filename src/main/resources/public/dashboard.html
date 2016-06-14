@@ -1,18 +1,22 @@
-<h3>Hello, <span><%=model.get('username')%></span>!</h3>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="${twitterProfile.name}"> Dashboard</title>
+</head>
+<body>
+<h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
 
-<div class="cont">
-    Your events:
+<h4>These are your upcoming events:</h4>
 
-    <div class="list-group">
-        <%
-        var events = model.get('joinedEvents');
-        for (var event of events){
-        %>
-        <a href="#!/event/<%= event.id %>" class="list-group-item">
-            <h4 class="list-group-item-heading"><%= event.eventName %> #<%= event.hashtag %></h4>
-            <p class="list-group-item-text"> <%= event.location.location %> </p>
-        </a>
-        <% ;} %>
-    </div>
+<ul th:each="event:${attender.joinedEvents}">
+    <li>
+        <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
+    </li>
+</ul>
 
-</div>
+<h4>These are your followed institutions:</h4>
+<ul>
+    <li th:each="institution:${attender.followedInstitutions}" th:text="${institution.username}">Event</li>
+</ul>
+
+</body>
+</html>

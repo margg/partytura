@@ -18,7 +18,7 @@ import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 import java.util.List;
 
 @Controller
-@RequestMapping("/#!")
+@RequestMapping("/")
 public class HomeController {
 
   private Twitter twitter;
