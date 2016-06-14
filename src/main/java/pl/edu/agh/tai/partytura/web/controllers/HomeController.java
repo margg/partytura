@@ -17,6 +17,7 @@ import pl.edu.agh.tai.partytura.model.User;
 import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
 import pl.edu.agh.tai.partytura.persistence.EventRepository;
 import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
+import pl.edu.agh.tai.partytura.web.View;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -58,37 +59,40 @@ public class HomeController {
     }
 
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-
-    List<Attender> attenders = attenderRepository.findByTwitterId(userProfile.getId());
-    List<Institution> institutions = institutionRepository.findByTwitterId(userProfile.getId());
-
     model.addAttribute("twitterProfile", userProfile);
 
-    User user;
-    if (isNewUser(attenders, institutions)) {
+    User user = getUser(userProfile.getId());
+    if (user == null) {
       return "/role";
-    } else if (!attenders.isEmpty()) {
-      // attender
-      if (attenders.size() > 1) {
-        LOGGER.warn("Found {} users with ID = {}.", attenders.size(), userProfile.getId());
-      }
-      user = attenders.get(0);
-      model.addAttribute("user", user);
+    }
+
+    model.addAttribute("user", user);
+
+    if (user instanceof Attender) {
       return "/attenderDashboard";
-    } else if (!institutions.isEmpty()) {
-      // institution
-      if (institutions.size() > 1) {
-        LOGGER.warn("Found {} users with ID = {}.", institutions.size(), userProfile.getId());
-      }
-      user = institutions.get(0);
-      model.addAttribute("user", user);
+    } else if (user instanceof Institution) {
       return "/instDashboard";
     }
     return "/error";
   }
 
-  private boolean isNewUser(List<? extends User> attenders, List<? extends User> institutions) {
-    return attenders.isEmpty() && institutions.isEmpty();
+  private User getUser(long id) {
+    List<Attender> attenders = attenderRepository.findByTwitterId(id);
+    List<Institution> institutions = institutionRepository.findByTwitterId(id);
+    if (!attenders.isEmpty()) {
+      // attender
+      if (attenders.size() > 1) {
+        LOGGER.warn("Found {} users with ID = {}.", attenders.size(), id);
+      }
+      return attenders.get(0);
+    } else if (!institutions.isEmpty()) {
+      // institution
+      if (institutions.size() > 1) {
+        LOGGER.warn("Found {} users with ID = {}.", institutions.size(), id);
+      }
+      return institutions.get(0);
+    }
+    return null;
   }
 
   @RequestMapping(path = "/dashboard", method = RequestMethod.POST)
