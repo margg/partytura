@@ -57,6 +57,44 @@ public class EventController {
     return eventRepository.findOne(eventId);
   }
 
+  @RequestMapping(path = "/createEvent", method = RequestMethod.GET)
+  public String createEventPage(Model model){
+    // TODO: check permissions
+    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+      return "redirect:/connect/twitter";
+    }
+
+    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
+    User user = getUser(userProfile.getId(), userProfile.getName());
+
+    model.addAttribute("user", user);
+    //model.addAttribute("event", new Event("","", LocalDateTime.now(), new EventLocation("")));
+    return "createEvent";
+  }
+
+  @RequestMapping(path = "/createEvent/newEvent", method = RequestMethod.POST)
+  public String createEvent(@ModelAttribute Event event, Model model) {
+    // TODO: check permissions
+    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+      return "redirect:/connect/twitter";
+    }
+    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
+    User user = getUser(userProfile.getId(), userProfile.getName());
+
+    Event e = eventRepository.insert(event);
+    /*nie wiem czy to jest ładne, chciałam uniknąć rzutowania usera na instytucję, poza tym
+    chyba trzeba updateowac institution repository, jak dodajemy jej event?*/
+    Institution i = institutionRepository.findByTwitterId(user.getTwitterId()).get(0);
+    i.addEvent(e);
+
+    eventRepository.save(e);
+    institutionRepository.save(i);
+
+    model.addAttribute("event", e);
+    String eventId = e.getId();
+    return "redirect:/event/" + eventId;
+  }
+
   //
   @RequestMapping(path = "/event/{eventId}", method = RequestMethod.GET)
   public String eventHomePage(@PathVariable("eventId") String eventId, Model model) {

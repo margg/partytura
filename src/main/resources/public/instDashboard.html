@@ -1,22 +1,40 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title th:text="${twitterProfile.name}"> Dashboard</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Partytura</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 </head>
 <body>
-<h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
+<div class="cont">
+    <div class="main-header" id="main-logo">Partytura</div>
 
-<h4>These are your events:</h4>
+    <div class="sub-cont">
 
-<ul th:each="event:${user.createdEvents}">
-    <li>
-        <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
-    </li>
-</ul>
+        <h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
 
-<h4>Genres:</h4>
-<ul>
-    <li th:each="genre:${user.genres}" th:text="${genre}">Genre</li>
-</ul>
+        <a class="btn btn-primary" href="/createEvent" role="button">Create event</a>
+        <h4>These are your upcoming events:</h4>
+        <ul th:each="event:${user.createdEvents}">
+            <li>
+                <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
+            </li>
+        </ul>
 
+        <h4>Genres:</h4>
+        <ul>
+            <li th:each="genre:${user.genres}" th:text="${genre}">Genre</li>
+        </ul>
+    </div>
+
+    <hr/>
+    <footer>© Partytura team</footer>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
 </body>
 </html>

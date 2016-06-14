@@ -35,6 +35,8 @@ public class Event {
   @JsonView(View.Event.class)
   private List<Post> posts;
 
+  public Event(){}
+
   @PersistenceConstructor
   public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
     this(eventName, hashtag, dateTime, location, new ArrayList<>());
