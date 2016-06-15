@@ -33,7 +33,7 @@ public class Event {
 
   @DBRef
   @JsonView(View.Event.class)
-  private List<Post> posts;
+  private List<Post> posts = new ArrayList<>();
 
   public Event(){}
 
@@ -81,5 +81,21 @@ public class Event {
 
   public String getId() {
     return id;
+  }
+
+  public void setEventName(String eventName) {
+    this.eventName = eventName;
+  }
+
+  public void setHashtag(String hashtag) {
+    this.hashtag = hashtag;
+  }
+
+  public void setDateTime(LocalDateTime dateTime) {
+    this.dateTime = dateTime;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
   }
 }
