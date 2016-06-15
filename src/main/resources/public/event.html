@@ -15,7 +15,7 @@ private List<Post> posts;
 
 <h4>Hashtag: <span th:text="${event.hashtag}"></span></h4>
 <h4>Date: <span th:text="${event.dateTime}"></span></h4>
-<h4>Location: <span th:text="${event.location.location}"></span></h4>
+<h4>Location: <span th:text="${event.location}"></span></h4>
 
 <h4>Posts: </h4>
 <ul th:each="post:${event.posts}">
