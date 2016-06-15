@@ -68,7 +68,7 @@ public class EventController {
     User user = getUser(userProfile.getId(), userProfile.getName());
 
     model.addAttribute("user", user);
-    model.addAttribute("event", new Event("","", LocalDateTime.now(), new EventLocation("")));
+    model.addAttribute("event", new Event("","", LocalDateTime.now(), ""));
     return "createEvent";
   }
 

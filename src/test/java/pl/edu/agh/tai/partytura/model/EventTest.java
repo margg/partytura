@@ -12,7 +12,7 @@ public class EventTest {
   @Test
   public void shouldAllowToAddPosts() throws Exception {
     // given
-    Event event = new Event("Event", "tag", LocalDateTime.of(2016, 6, 10, 10, 0), mock(EventLocation.class));
+    Event event = new Event("Event", "tag", LocalDateTime.of(2016, 6, 10, 10, 0), "location");
     Post post = mock(Post.class);
 
     // when

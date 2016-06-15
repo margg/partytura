@@ -1,11 +1,12 @@
 package pl.edu.agh.tai.partytura;
 
-import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.edu.agh.tai.partytura.model.*;
+import pl.edu.agh.tai.partytura.model.Attender;
+import pl.edu.agh.tai.partytura.model.Event;
+import pl.edu.agh.tai.partytura.model.Institution;
 import pl.edu.agh.tai.partytura.persistence.*;
 
 import java.time.LocalDateTime;
@@ -51,13 +52,13 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     Institution bagatela = institutionRepository.insert(createInstitution("teatrbagatela", 7));
 
     Event elvislives = eventRepository.insert(createEvent("Elvis lives!", "elvislives",
-            LocalDateTime.of(2016, 7, 10, 18, 0), new EventLocation("ICE Kraków")));
+            LocalDateTime.of(2016, 7, 10, 18, 0), "ICE Kraków"));
     Event hanszimmer = eventRepository.insert(createEvent("Hans Zimmer live", "hanszimmerlive",
-            LocalDateTime.of(2016, 7, 15, 18, 0), new EventLocation("ICE Kraków")));
+            LocalDateTime.of(2016, 7, 15, 18, 0), "ICE Kraków"));
     Event luckychops = eventRepository.insert(createEvent("Lucky Chops Cracow", "luckychopscracow",
-            LocalDateTime.of(2016, 7, 20, 18, 0), new EventLocation("CK Rotunda")));
+            LocalDateTime.of(2016, 7, 20, 18, 0), "CK Rotunda"));
     Event mayday = eventRepository.insert(createEvent("Mayday", "maydaybagatela",
-            LocalDateTime.of(2016, 7, 22, 18, 0), new EventLocation("Teatr Bagatela")));
+            LocalDateTime.of(2016, 7, 22, 18, 0), "Teatr Bagatela"));
 
     iceKrakow.addEvent(elvislives);
     iceKrakow.addEvent(hanszimmer);
@@ -95,7 +96,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
 
   }
 
-  private Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
+  private Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, String location) {
     return new Event(eventName, hashtag, dateTime, location);
   }
 
