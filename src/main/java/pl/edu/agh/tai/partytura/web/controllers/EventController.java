@@ -12,7 +12,9 @@ import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
 import pl.edu.agh.tai.partytura.web.View;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -60,28 +62,39 @@ public class EventController {
   @RequestMapping(path = "/createEvent", method = RequestMethod.GET)
   public String createEventPage(Model model){
     // TODO: check permissions
-    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
-    }
+    }*/
 
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
     User user = getUser(userProfile.getId(), userProfile.getName());
 
     model.addAttribute("user", user);
-    model.addAttribute("event", new Event("","", LocalDateTime.now(), ""));
+    model.addAttribute("event", new Event("","", LocalDateTime.now(), new EventLocation("")));
     return "createEvent";
   }
 
   @RequestMapping(path = "/createEvent/newEvent", method = RequestMethod.POST)
-  public String createEvent(@ModelAttribute Event event, Model model) {
+  public String createEvent(HttpServletRequest request, Model model) {
     // TODO: check permissions
-    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
-    }
+    }*/
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
     User user = getUser(userProfile.getId(), userProfile.getName());
 
+    String eventName = request.getParameter("eventName");
+    String hashtag = request.getParameter("hashtag");
+    String location = request.getParameter("location");
+    EventLocation eventLocation = new EventLocation(location);
+    String dateTime = request.getParameter("dateTime");
+    dateTime = dateTime.replace("T", " ");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
+
+    Event event = new Event(eventName, hashtag, localDateTime, eventLocation);
     Event e = eventRepository.insert(event);
+
     /*nie wiem czy to jest ładne, chciałam uniknąć rzutowania usera na instytucję, poza tym
     chyba trzeba updateowac institution repository, jak dodajemy jej event?*/
     Institution i = institutionRepository.findByTwitterId(user.getTwitterId()).get(0);
@@ -99,9 +112,9 @@ public class EventController {
   @RequestMapping(path = "/event/{eventId}", method = RequestMethod.GET)
   public String eventHomePage(@PathVariable("eventId") String eventId, Model model) {
     // TODO: check permissions
-    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
       return "redirect:/connect/twitter";
-    }
+    }*/
 
     TwitterProfile userProfile = twitter.userOperations().getUserProfile();
     User user = getUser(userProfile.getId(), userProfile.getName());
