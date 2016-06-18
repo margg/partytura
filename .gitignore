@@ -3,7 +3,10 @@
 *.iml
 
 out/
+build/
 target/
+
+.gradle/
 
 ### Java template
 *.class
