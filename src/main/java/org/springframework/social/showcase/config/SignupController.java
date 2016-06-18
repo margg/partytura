@@ -15,13 +15,10 @@
  */
 package org.springframework.social.showcase.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.env.Environment;
 import org.springframework.social.connect.*;
-import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.showcase.model.Attender;
 import org.springframework.social.showcase.model.Institution;
@@ -29,7 +26,6 @@ import org.springframework.social.showcase.model.User;
 import org.springframework.social.showcase.persistence.AttenderRepository;
 import org.springframework.social.showcase.persistence.InstitutionRepository;
 import org.springframework.social.showcase.signin.SignInUtils;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,36 +34,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class SignupController {
-
-    private ProviderSignInUtils providerSignInUtils;
-
-    @Autowired
-    private AttenderRepository attendeRepository;
+    private final ProviderSignInUtils signInUtils;
 
     @Autowired
-    private InstitutionRepository institutionRepository;
+    private AttenderRepository attenders;
 
     @Autowired
-    public SignupController(ConnectionFactoryLocator connectionFactoryLocator,
-                            UsersConnectionRepository connectionRepository) {
-        this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+    private InstitutionRepository institutions;
+
+    @Autowired
+    public SignupController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository connectionRepository) {
+        this.signInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public SignupForm signupForm(WebRequest request, Model model) {
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
-        SignupForm signupForm;
-        if (connection != null) {
-            signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
-        } else {
-            return null;
-        }
-        model.addAttribute("form", signupForm);
-        model.addAttribute("types", UserType.values());
-        return signupForm;
+        Connection<?> connectionFromSession = signInUtils.getConnectionFromSession(request);
+        return Optional.<Connection<?>>ofNullable(connectionFromSession).map(connection -> {
+            SignupForm signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
+            model.addAttribute("form", signupForm);
+            model.addAttribute("types", UserType.values());
+            return signupForm;
+        }).orElse(null);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -75,22 +67,26 @@ public class SignupController {
         if (formBinding.hasErrors()) {
             return "/error";
         }
-        User user = createAccount(form, formBinding);
-        if (user != null) {
-            SignInUtils.signin(String.valueOf(user.getTwitterId()));
-            providerSignInUtils.doPostSignUp(String.valueOf(user.getTwitterId()), request);
-            return "redirect:/";
-        }
-        return "/error";
+
+        Optional<User> created = createAccount(form);
+        created.ifPresent(user -> {
+            SignInUtils.signin(user.getUsername());
+            signInUtils.doPostSignUp(user.getUsername(), request);
+        });
+
+        return created.isPresent() ? "redirect:/" : "/error";
     }
 
-    private User createAccount(SignupForm form, BindingResult formBinding) {
+    private Optional<User> createAccount(SignupForm form) {
         switch (form.getType()) {
             case ATTENDER:
-                return attendeRepository.insert(new Attender(form.getUsername()));
+                Attender attender = attenders.insert(new Attender(form.getUsername()));
+                return Optional.of(attender);
             case INSTITUTION:
-                return institutionRepository.insert(new Institution(form.getUsername()));
+                Institution institution = institutions.insert(new Institution(form.getUsername()));
+                return Optional.of(institution);
+            default:
+                return Optional.empty();
         }
-        return null;
     }
 }

@@ -1,5 +1,7 @@
 package org.springframework.social.showcase.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
@@ -14,7 +16,6 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-
     private final Provider<ConnectionRepository> connectionRepositoryProvider;
 
     @Autowired
@@ -24,13 +25,11 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Principal currentUser, Model model) {
-        Connection<Twitter> connection = getConnectionRepository().findPrimaryConnection(Twitter.class);
+        ConnectionRepository connectionRepository = connectionRepositoryProvider.get();
+        Connection<Twitter> connection = connectionRepository.findPrimaryConnection(Twitter.class);
         UserProfile profile = connection.fetchUserProfile();
         model.addAttribute(profile);
         return "home";
     }
 
-    private ConnectionRepository getConnectionRepository() {
-        return connectionRepositoryProvider.get();
-    }
 }
