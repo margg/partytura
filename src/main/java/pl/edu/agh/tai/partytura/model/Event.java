@@ -33,7 +33,9 @@ public class Event {
 
   @DBRef
   @JsonView(View.Event.class)
-  private List<Post> posts;
+  private List<Post> posts = new ArrayList<>();
+
+  public Event(){}
 
   @PersistenceConstructor
   public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
@@ -79,5 +81,21 @@ public class Event {
 
   public String getId() {
     return id;
+  }
+
+  public void setEventName(String eventName) {
+    this.eventName = eventName;
+  }
+
+  public void setHashtag(String hashtag) {
+    this.hashtag = hashtag;
+  }
+
+  public void setDateTime(LocalDateTime dateTime) {
+    this.dateTime = dateTime;
+  }
+
+  public void setLocation(EventLocation location) {
+    this.location = location;
   }
 }

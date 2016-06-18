@@ -1,11 +1,13 @@
 package pl.edu.agh.tai.partytura;
 
-import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.edu.agh.tai.partytura.model.*;
+import pl.edu.agh.tai.partytura.model.Attender;
+import pl.edu.agh.tai.partytura.model.Event;
+import pl.edu.agh.tai.partytura.model.EventLocation;
+import pl.edu.agh.tai.partytura.model.Institution;
 import pl.edu.agh.tai.partytura.persistence.*;
 
 import java.time.LocalDateTime;
