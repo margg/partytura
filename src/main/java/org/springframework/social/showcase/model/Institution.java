@@ -12,52 +12,52 @@ import java.util.Set;
 @Document
 public class Institution extends User {
 
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  private Set<String> genres;
+    private Set<String> genres;
 
-  @DBRef
-  private Set<Event> createdEvents;
+    @DBRef
+    private Set<Event> createdEvents;
 
-  @PersistenceConstructor
-  public Institution(String username, long twitterId) {
-    this(username, twitterId, new HashSet<>(), new HashSet<>());
-  }
+    @PersistenceConstructor
+    public Institution(String username, long twitterId) {
+        this(username, twitterId, new HashSet<>(), new HashSet<>());
+    }
 
-  public Institution(String username, long twitterId, Set<String> genres, Set<Event> createdEvents) {
-    super(username, twitterId);
-    this.genres = genres;
-    this.createdEvents = createdEvents;
-  }
+    public Institution(String username, long twitterId, Set<String> genres, Set<Event> createdEvents) {
+        super(username, twitterId);
+        this.genres = genres;
+        this.createdEvents = createdEvents;
+    }
 
-  public Institution(String username) {
-    super(username, -1);
-  }
+    public Institution(String username) {
+        super(username, -1);
+    }
 
-  public void addEvent(Event event) {
-    createdEvents.add(event);
-  }
+    public void addEvent(Event event) {
+        createdEvents.add(event);
+    }
 
-  public void addGenre(String genre) {
-    genres.add(genre);
-  }
+    public void addGenre(String genre) {
+        genres.add(genre);
+    }
 
-  public Set<Event> getCreatedEvents() {
-    return createdEvents;
-  }
+    public Set<Event> getCreatedEvents() {
+        return createdEvents;
+    }
 
-  @Required
-  public void setCreatedEvents(Set<Event> createdEvents) {
-    this.createdEvents = new HashSet<>(createdEvents);
-  }
+    @Required
+    public void setCreatedEvents(Set<Event> createdEvents) {
+        this.createdEvents = new HashSet<>(createdEvents);
+    }
 
-  public Set<String> getGenres() {
-    return genres;
-  }
+    public Set<String> getGenres() {
+        return genres;
+    }
 
-  @Required
-  public void setGenres(Set<String> genres) {
-    this.genres = new HashSet<>(genres);
-  }
+    @Required
+    public void setGenres(Set<String> genres) {
+        this.genres = new HashSet<>(genres);
+    }
 }

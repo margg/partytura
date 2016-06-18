@@ -10,7 +10,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface AttenderRepository extends MongoRepository<Attender, String> {
 
-  List<Attender> findByUsername(@Param("username") String username);
+    List<Attender> findByUsername(@Param("username") String username);
 
-  List<Attender> findByTwitterId(@Param("twitterId") long twitterId);
+    List<Attender> findByTwitterId(@Param("twitterId") long twitterId);
 }

@@ -42,55 +42,55 @@ import javax.validation.Valid;
 @Controller
 public class SignupController {
 
-  private ProviderSignInUtils providerSignInUtils;
+    private ProviderSignInUtils providerSignInUtils;
 
-  @Autowired
-  private AttenderRepository attendeRepository;
+    @Autowired
+    private AttenderRepository attendeRepository;
 
-  @Autowired
-  private InstitutionRepository institutionRepository;
+    @Autowired
+    private InstitutionRepository institutionRepository;
 
-  @Autowired
-	public SignupController(ConnectionFactoryLocator connectionFactoryLocator,
-                          UsersConnectionRepository connectionRepository) {
-    this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
-  }
-
-  @RequestMapping(value="/signup", method= RequestMethod.GET)
-  public SignupForm signupForm(WebRequest request, Model model) {
-    Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
-    SignupForm signupForm;
-    if (connection != null) {
-      signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
-    } else {
-      return null;
+    @Autowired
+    public SignupController(ConnectionFactoryLocator connectionFactoryLocator,
+                            UsersConnectionRepository connectionRepository) {
+        this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
     }
-    model.addAttribute("form", signupForm);
-    model.addAttribute("types", UserType.values());
-    return signupForm;
-  }
 
-  @RequestMapping(value="/signup", method=RequestMethod.POST)
-  public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
-    if (formBinding.hasErrors()) {
-      return "/error";
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public SignupForm signupForm(WebRequest request, Model model) {
+        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+        SignupForm signupForm;
+        if (connection != null) {
+            signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
+        } else {
+            return null;
+        }
+        model.addAttribute("form", signupForm);
+        model.addAttribute("types", UserType.values());
+        return signupForm;
     }
-    User user = createAccount(form, formBinding);
-    if (user != null) {
-      SignInUtils.signin(String.valueOf(user.getTwitterId()));
-      providerSignInUtils.doPostSignUp(String.valueOf(user.getTwitterId()), request);
-      return "redirect:/";
-    }
-    return "/error";
-  }
 
-  private User createAccount(SignupForm form, BindingResult formBinding) {
-    switch (form.getType()) {
-      case ATTENDER:
-        return attendeRepository.insert(new Attender(form.getUsername()));
-      case INSTITUTION:
-        return institutionRepository.insert(new Institution(form.getUsername()));
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
+        if (formBinding.hasErrors()) {
+            return "/error";
+        }
+        User user = createAccount(form, formBinding);
+        if (user != null) {
+            SignInUtils.signin(String.valueOf(user.getTwitterId()));
+            providerSignInUtils.doPostSignUp(String.valueOf(user.getTwitterId()), request);
+            return "redirect:/";
+        }
+        return "/error";
     }
-    return null;
-  }
+
+    private User createAccount(SignupForm form, BindingResult formBinding) {
+        switch (form.getType()) {
+            case ATTENDER:
+                return attendeRepository.insert(new Attender(form.getUsername()));
+            case INSTITUTION:
+                return institutionRepository.insert(new Institution(form.getUsername()));
+        }
+        return null;
+    }
 }

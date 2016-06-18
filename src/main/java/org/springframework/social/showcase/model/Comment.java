@@ -10,46 +10,47 @@ import java.time.LocalDateTime;
 @Document
 public class Comment {
 
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @DBRef
-  private User author;
+    @DBRef
+    private User author;
 
-  private String content;
+    private String content;
 
-  private LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
-  public Comment() {}
+    public Comment() {
+    }
 
-  @PersistenceConstructor
-  public Comment(String content, User author, LocalDateTime dateTime) {
-    this.content = content;
-    this.author = author;
-    this.dateTime = dateTime;
-  }
+    @PersistenceConstructor
+    public Comment(String content, User author, LocalDateTime dateTime) {
+        this.content = content;
+        this.author = author;
+        this.dateTime = dateTime;
+    }
 
-  public String getContent() {
-    return content;
-  }
+    public String getContent() {
+        return content;
+    }
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-  public User getAuthor() {
-    return author;
-  }
+    public User getAuthor() {
+        return author;
+    }
 
-  public void setAuthor(User author) {
-    this.author = author;
-  }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
-  public LocalDateTime getDateTime() {
-    return dateTime;
-  }
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
 
-  public void setDateTime(LocalDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 }
