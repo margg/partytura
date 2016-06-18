@@ -26,34 +26,34 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 @EnableSocial
 public class SocialConfig extends SocialConfigurerAdapter {
 
-  @Autowired
-  private Environment environment;
+    @Autowired
+    private Environment environment;
 
-  @Autowired
-  private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-  @Autowired
-  private AccountImplicitConnectionSignup connectionSignup;
+    @Autowired
+    private AccountImplicitConnectionSignup connectionSignup;
 
-  @Bean(name = "usersConnectionRepository")
-  @Scope(value="singleton", proxyMode=ScopedProxyMode.INTERFACES)
-  @Override
-  public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-    JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
-    repository.setConnectionSignUp(connectionSignup);
-    return repository;
-  }
+    @Bean(name = "usersConnectionRepository")
+    @Scope(value = "singleton", proxyMode = ScopedProxyMode.INTERFACES)
+    @Override
+    public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+        repository.setConnectionSignUp(connectionSignup);
+        return repository;
+    }
 
-  @Bean
-  public ProviderSignInController providerSignInController(
-      ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
-    return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter());
-  }
+    @Bean
+    public ProviderSignInController providerSignInController(
+            ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
+        return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter());
+    }
 
-  @Bean
-  public SignInAdapter signInAdapter() {
-    return new ImplicitSignInAdapter(new HttpSessionRequestCache());
-  }
+    @Bean
+    public SignInAdapter signInAdapter() {
+        return new ImplicitSignInAdapter(new HttpSessionRequestCache());
+    }
 
 /*  @Bean
   @Scope(value="singleton", proxyMode=ScopedProxyMode.INTERFACES)

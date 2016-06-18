@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Component
 public class EventFactory {
 
-  public Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
-    return new Event(eventName, hashtag, dateTime, location);
-  }
+    public Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
+        return new Event(eventName, hashtag, dateTime, location);
+    }
 }

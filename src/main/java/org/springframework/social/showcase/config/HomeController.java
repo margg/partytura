@@ -14,23 +14,23 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-	
-	private final Provider<ConnectionRepository> connectionRepositoryProvider;
 
-  @Autowired
-	public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider) {
-		this.connectionRepositoryProvider = connectionRepositoryProvider;
-  }
+    private final Provider<ConnectionRepository> connectionRepositoryProvider;
 
-	@RequestMapping("/")
-	public String home(Principal currentUser, Model model) {
-			Connection<Twitter> connection = getConnectionRepository().findPrimaryConnection(Twitter.class);
-			UserProfile profile = connection.fetchUserProfile();
-			model.addAttribute(profile);
-		return "home";
-	}
-	
-	private ConnectionRepository getConnectionRepository() {
-		return connectionRepositoryProvider.get();
-	}
+    @Autowired
+    public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider) {
+        this.connectionRepositoryProvider = connectionRepositoryProvider;
+    }
+
+    @RequestMapping("/")
+    public String home(Principal currentUser, Model model) {
+        Connection<Twitter> connection = getConnectionRepository().findPrimaryConnection(Twitter.class);
+        UserProfile profile = connection.fetchUserProfile();
+        model.addAttribute(profile);
+        return "home";
+    }
+
+    private ConnectionRepository getConnectionRepository() {
+        return connectionRepositoryProvider.get();
+    }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface EventRepository extends MongoRepository<Event, String> {
 
-  List<Event> findByHashtag(@Param("hashtag") String hashtag);
+    List<Event> findByHashtag(@Param("hashtag") String hashtag);
 }

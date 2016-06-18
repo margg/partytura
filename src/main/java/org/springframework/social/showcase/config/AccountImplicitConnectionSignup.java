@@ -12,30 +12,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountImplicitConnectionSignup implements ConnectionSignUp {
 
-  private final AttenderRepository attenderRepository;
-  private InstitutionRepository institutionRepository;
+    private final AttenderRepository attenderRepository;
+    private InstitutionRepository institutionRepository;
 
-  @Autowired
-  public AccountImplicitConnectionSignup(AttenderRepository attenderRepository, InstitutionRepository institutionRepository) {
-    this.attenderRepository = attenderRepository;
-    this.institutionRepository = institutionRepository;
-  }
-
-  @Override
-  public String execute(Connection<?> connection) {
-    try {
-      // TODO: generify for other providers
-      TwitterProfile userProfile = ((Connection<Twitter>) connection).getApi().userOperations().getUserProfile();
-
-      return userExists(userProfile.getId()) ? String.valueOf(userProfile.getId()) : null;
-
-    } catch (ClassCastException e) {
-      // TODO: log
-      return null;
+    @Autowired
+    public AccountImplicitConnectionSignup(AttenderRepository attenderRepository, InstitutionRepository institutionRepository) {
+        this.attenderRepository = attenderRepository;
+        this.institutionRepository = institutionRepository;
     }
-  }
 
-  private boolean userExists(long id) {
-    return (!attenderRepository.findByTwitterId(id).isEmpty() || !institutionRepository.findByTwitterId(id).isEmpty());
-  }
+    @Override
+    public String execute(Connection<?> connection) {
+        try {
+            // TODO: generify for other providers
+            TwitterProfile userProfile = ((Connection<Twitter>) connection).getApi().userOperations().getUserProfile();
+
+            return userExists(userProfile.getScreenName()) ? String.valueOf(userProfile.getScreenName()) : null;
+
+        } catch (ClassCastException e) {
+            // TODO: log
+            return null;
+        }
+    }
+
+    private boolean userExists(String name) {
+        return (!attenderRepository.findByUsername(name).isEmpty() || !institutionRepository.findByUsername(name).isEmpty());
+    }
 }
