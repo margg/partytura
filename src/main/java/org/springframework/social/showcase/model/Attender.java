@@ -23,18 +23,14 @@ public class Attender extends User {
     private Set<Event> joinedEvents;
 
     @PersistenceConstructor
-    public Attender(String username, long twitterId) {
-        this(username, twitterId, new HashSet<>(), new HashSet<>());
+    public Attender(String username) {
+        this(username, new HashSet<>(), new HashSet<>());
     }
 
-    public Attender(String username, long twitterId, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
-        super(username, twitterId);
+    public Attender(String username, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
+        super(username);
         this.followedInstitutions = followedInstitutions;
         this.joinedEvents = joinedEvents;
-    }
-
-    public Attender(String username) {
-        super(username, -10);
     }
 
     public void follow(Institution institution) {
