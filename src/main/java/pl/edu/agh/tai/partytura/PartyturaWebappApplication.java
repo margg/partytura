@@ -55,7 +55,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     Event elvislives = eventRepository.insert(createEvent("Elvis lives!", "elvislives",
             LocalDateTime.of(2016, 7, 10, 18, 0), new EventLocation("ICE Kraków")));
     Event hanszimmer = eventRepository.insert(createEvent("Hans Zimmer live", "hanszimmerlive",
-            LocalDateTime.of(2016, 7, 15, 18, 0), new EventLocation("ICE Kraków"));
+            LocalDateTime.of(2016, 7, 15, 18, 0), new EventLocation("ICE Kraków")));
     Event luckychops = eventRepository.insert(createEvent("Lucky Chops Cracow", "luckychopscracow",
             LocalDateTime.of(2016, 7, 20, 18, 0), new EventLocation("CK Rotunda")));
     Event mayday = eventRepository.insert(createEvent("Mayday", "maydaybagatela",
