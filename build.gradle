@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
+    }
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+war {
+    baseName = 'spring-social-showcase'
+}
+
+eclipse {
+    jdt {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-milestone" }
+}
+
+dependencies {
+//  compile("org.springframework.boot:spring-boot-starter-social-facebook")
+
+    // Override Spring Boot's choice of Spring Social Facebook version
+//  compile("org.springframework.social:spring-social-facebook:2.0.0.RELEASE")
+//  compile("org.springframework.social:spring-social-facebook-web:2.0.0.RELEASE")
+
+
+// http://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure
+    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+
+
+    compile("org.springframework.boot:spring-boot-starter-social-twitter")
+
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+// http://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core
+    compile group: 'org.springframework.data', name: 'spring-data-commons-core'
+
+// http://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb
+    compile group: 'org.springframework.data', name: 'spring-data-mongodb'
+
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("com.h2database:h2")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
