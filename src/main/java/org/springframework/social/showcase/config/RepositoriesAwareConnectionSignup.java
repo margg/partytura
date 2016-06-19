@@ -11,26 +11,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RepositoriesAwareConnectionSignup implements ConnectionSignUp {
-    private static final Logger logger = LoggerFactory.getLogger(RepositoriesAwareConnectionSignup.class);
-    private final AttenderRepository attenders;
-    private final InstitutionRepository institutions;
+  private static final Logger logger = LoggerFactory.getLogger(RepositoriesAwareConnectionSignup.class);
+  private final AttenderRepository attenders;
+  private final InstitutionRepository institutions;
 
-    @Autowired
-    public RepositoriesAwareConnectionSignup(AttenderRepository attenders, InstitutionRepository institutions) {
-        this.attenders = attenders;
-        this.institutions = institutions;
-    }
+  @Autowired
+  public RepositoriesAwareConnectionSignup(AttenderRepository attenders, InstitutionRepository institutions) {
+    this.attenders = attenders;
+    this.institutions = institutions;
+  }
 
-    @Override
-    public String execute(Connection<?> connection) {
-        String username = connection.fetchUserProfile().getUsername();
-        return userExists(username) ? username : null;
-    }
+  @Override
+  public String execute(Connection<?> connection) {
+    String username = connection.fetchUserProfile().getUsername();
+    return userExists(username) ? username : null;
+  }
 
-    private boolean userExists(String username) {
-        boolean isAttender = !attenders.findByUsername(username).isEmpty();
-        boolean isInstitution = !institutions.findByUsername(username).isEmpty();
-        logger.info("Connection resolved as: username={}, isAttender={}, isInstitution={}", username, isAttender, isInstitution);
-        return isAttender || isInstitution;
-    }
+  private boolean userExists(String username) {
+    boolean isAttender = !attenders.findByUsername(username).isEmpty();
+    boolean isInstitution = !institutions.findByUsername(username).isEmpty();
+    logger.info("Connection resolved as: username={}, isAttender={}, isInstitution={}", username, isAttender, isInstitution);
+    return isAttender || isInstitution;
+  }
 }

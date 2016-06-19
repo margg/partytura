@@ -10,5 +10,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface InstitutionRepository extends MongoRepository<Institution, String> {
 
-    List<Institution> findByUsername(@Param("username") String username);
+  List<Institution> findByUsername(@Param("username") String username);
 }

@@ -13,56 +13,56 @@ import java.util.Set;
 @Document
 public class Attender extends User {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @DBRef
-    private Set<Institution> followedInstitutions;
+  @DBRef
+  private Set<Institution> followedInstitutions;
 
-    @DBRef
-    private Set<Event> joinedEvents;
+  @DBRef
+  private Set<Event> joinedEvents;
 
-    @PersistenceConstructor
-    public Attender(String username) {
-        this(username, new HashSet<>(), new HashSet<>());
+  @PersistenceConstructor
+  public Attender(String username) {
+    this(username, new HashSet<>(), new HashSet<>());
+  }
+
+  public Attender(String username, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
+    super(username);
+    this.followedInstitutions = followedInstitutions;
+    this.joinedEvents = joinedEvents;
+  }
+
+  public void follow(Institution institution) {
+    this.followedInstitutions.add(institution);
+  }
+
+  public void unfollow(Institution institution) throws UnfollowingNotFollowedInstitutionException {
+    boolean removed = this.followedInstitutions.remove(institution);
+    if (!removed) {
+      throw new UnfollowingNotFollowedInstitutionException();
     }
+  }
 
-    public Attender(String username, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
-        super(username);
-        this.followedInstitutions = followedInstitutions;
-        this.joinedEvents = joinedEvents;
-    }
+  public void joinEvent(Event event) {
+    this.joinedEvents.add(event);
+  }
 
-    public void follow(Institution institution) {
-        this.followedInstitutions.add(institution);
-    }
+  public Set<Institution> getFollowedInstitutions() {
+    return followedInstitutions;
+  }
 
-    public void unfollow(Institution institution) throws UnfollowingNotFollowedInstitutionException {
-        boolean removed = this.followedInstitutions.remove(institution);
-        if (!removed) {
-            throw new UnfollowingNotFollowedInstitutionException();
-        }
-    }
+  @Required
+  public void setFollowedInstitutions(Set<Institution> followedInstitutions) {
+    this.followedInstitutions = new HashSet<>(followedInstitutions);
+  }
 
-    public void joinEvent(Event event) {
-        this.joinedEvents.add(event);
-    }
+  public Set<Event> getJoinedEvents() {
+    return joinedEvents;
+  }
 
-    public Set<Institution> getFollowedInstitutions() {
-        return followedInstitutions;
-    }
-
-    @Required
-    public void setFollowedInstitutions(Set<Institution> followedInstitutions) {
-        this.followedInstitutions = new HashSet<>(followedInstitutions);
-    }
-
-    public Set<Event> getJoinedEvents() {
-        return joinedEvents;
-    }
-
-    @Required
-    public void setJoinedEvents(Set<Event> joinedEvents) {
-        this.joinedEvents = new HashSet<>(joinedEvents);
-    }
+  @Required
+  public void setJoinedEvents(Set<Event> joinedEvents) {
+    this.joinedEvents = new HashSet<>(joinedEvents);
+  }
 }

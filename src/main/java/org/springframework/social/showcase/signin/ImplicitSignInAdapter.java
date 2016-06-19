@@ -1,18 +1,3 @@
-/*
- * Copyright 2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.social.showcase.signin;
 
 import javax.inject.Inject;
@@ -31,40 +16,40 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 public class ImplicitSignInAdapter implements SignInAdapter {
 
-    private final RequestCache requestCache;
+  private final RequestCache requestCache;
 
-    @Inject
-    public ImplicitSignInAdapter(RequestCache requestCache) {
-        this.requestCache = requestCache;
-    }
+  @Inject
+  public ImplicitSignInAdapter(RequestCache requestCache) {
+    this.requestCache = requestCache;
+  }
 
-    @Override
-    public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-        String providerUserId = connection.fetchUserProfile().getUsername();
+  @Override
+  public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
+    String providerUserId = connection.fetchUserProfile().getUsername();
 
 //    SignInUtils.signin(providerUserId);
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(providerUserId, null, null));
+    SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(providerUserId, null, null));
 
-        return extractOriginalUrl(request);
-    }
+    return extractOriginalUrl(request);
+  }
 
-    private String extractOriginalUrl(NativeWebRequest request) {
-        HttpServletRequest nativeReq = request.getNativeRequest(HttpServletRequest.class);
-        HttpServletResponse nativeRes = request.getNativeResponse(HttpServletResponse.class);
-        SavedRequest saved = requestCache.getRequest(nativeReq, nativeRes);
-        if (saved == null) {
-            return null;
-        }
-        requestCache.removeRequest(nativeReq, nativeRes);
-        removeAutheticationAttributes(nativeReq.getSession(false));
-        return saved.getRedirectUrl();
+  private String extractOriginalUrl(NativeWebRequest request) {
+    HttpServletRequest nativeReq = request.getNativeRequest(HttpServletRequest.class);
+    HttpServletResponse nativeRes = request.getNativeResponse(HttpServletResponse.class);
+    SavedRequest saved = requestCache.getRequest(nativeReq, nativeRes);
+    if (saved == null) {
+      return null;
     }
+    requestCache.removeRequest(nativeReq, nativeRes);
+    removeAutheticationAttributes(nativeReq.getSession(false));
+    return saved.getRedirectUrl();
+  }
 
-    private void removeAutheticationAttributes(HttpSession session) {
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+  private void removeAutheticationAttributes(HttpSession session) {
+    if (session == null) {
+      return;
     }
+    session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+  }
 
 }
