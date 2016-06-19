@@ -29,22 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
         .formLogin()
-        .loginPage("/signin")
+          .loginPage("/signin")
 //              .loginProcessingUrl("/signin/authenticate")
 //              .failureUrl("/signin?param.error=bad_credentials")
         .and()
-        .logout()
-        .logoutUrl("/signout")
-        .deleteCookies("JSESSIONID")
+          .logout()
+          .logoutUrl("/signout")
+          .deleteCookies("JSESSIONID")
         .and()
-        .authorizeRequests()
-        .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/signin/**", "/signup/**", "/disconnect/twitter").permitAll()
-        .antMatchers("/**").authenticated()
-//            .and()
-//              .rememberMe()
-//            .and()
-//              .apply(new SpringSocialConfigurer());
-    ;
+          .authorizeRequests()
+            .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/signin/**", "/signup/**", "/disconnect/twitter").permitAll()
+            .antMatchers("/**").authenticated();
   }
 
   @Bean

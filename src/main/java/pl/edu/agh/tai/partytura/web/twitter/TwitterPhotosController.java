@@ -31,7 +31,6 @@ public class TwitterPhotosController {
   public String showAlbum(@PathVariable("albumId") String albumId, Model model) {
     List<Tweet> favorites = twitter.timelineOperations().getFavorites(albumId);
     model.addAttribute("album", favorites);
-//		model.addAttribute("photos", twitter.timelineOperations().getPhotos(albumId));
     return "twitter/album";
   }
 
