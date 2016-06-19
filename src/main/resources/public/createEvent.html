@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Partytura</title>
+    <title>Create event</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/normalize.css"/>
@@ -14,7 +14,7 @@
     <div class="main-header" id="main-logo">Partytura</div>
 
     <div class="sub-cont">
-        <form action="#" th:action="@{/createEvent/newEvent}" method="post">
+        <form action="#" th:action="@{/createEvent/newEvent}" method="post" id="create-event-form">
             <div class="form-group">
                 <label for="eventName">Event name</label>
                 <input type="text" class="form-control" id="eventName" placeholder="Name" name="eventName"/>
@@ -41,6 +41,6 @@
     <footer>© Partytura team</footer>
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!--<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
+<!--<script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
 </body>
 </html>

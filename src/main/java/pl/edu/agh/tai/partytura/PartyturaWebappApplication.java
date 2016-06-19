@@ -65,6 +65,8 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     iceKrakow.addEvent(hanszimmer);
     ckrotunda.addEvent(luckychops);
     bagatela.addEvent(mayday);
+    iceKrakow.setGenres(ImmutableSet.of("classical", "posh"));
+    ckrotunda.setGenres(ImmutableSet.of("jazz"));
 
     // join events
     john.joinEvent(elvislives);
@@ -94,7 +96,18 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     attenderRepository.save(ImmutableList.of(john, stanley, keira, aisha));
     institutionRepository.save(ImmutableList.of(iceKrakow, ckrotunda, bagatela));
 */
-
+/*
+    Attender veecla = attenderRepository.findByUsername("Veecla").get(0);
+    Institution iceKrakow = institutionRepository.findByUsername("icekrakow").get(0);
+    Institution ckrotunda = institutionRepository.findByUsername("ckrotunda").get(0);
+    Event elvislives = eventRepository.findByHashtag("elvislives").get(0);
+    Event hanszimmerlive = eventRepository.findByHashtag("hanszimmerlive").get(0);
+    veecla.follow(iceKrakow);
+    veecla.follow(ckrotunda);
+    veecla.joinEvent(elvislives);
+    veecla.joinEvent(hanszimmerlive);
+    attenderRepository.save(veecla);
+*/
   }
 
   private Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {

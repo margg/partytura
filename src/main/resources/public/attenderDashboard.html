@@ -1,22 +1,52 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title th:text="${twitterProfile.name}"> Dashboard</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title th:text="${twitterProfile.name}">Dashboard</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 </head>
 <body>
-<h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
+<div class="cont">
+    <div class="main-header" id="main-logo">Partytura</div>
 
-<h4>These are your upcoming events:</h4>
+    <div class="sub-cont">
 
-<ul th:each="event:${user.joinedEvents}">
-    <li>
-        <a th:href="@{~/event/{id}(id=${event.id})}"><span th:text="${event.eventName}">Event</span></a>
-    </li>
-</ul>
+        <h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
 
-<h4>These are your followed institutions:</h4>
-<ul>
-    <li th:each="institution:${user.followedInstitutions}" th:text="${institution.username}">Event</li>
-</ul>
+        <h4>These are your upcoming events:</h4>
+        <div class="list-group">
+            <ul th:each="event:${user.joinedEvents}" class="events-list">
+                <li class="event-list-item">
+                    <a th:href="@{~/event/{id}(id=${event.id})}" class="list-group-item">
+                        <h4 class="list-group-item-heading"><span th:text="${event.eventName}">Event</span></h4>
+                        <p class="list-group-item-text"><span th:text="${event.hashtag}">#hashtag</span></p>
+                        <p class="list-group-item-text"><span th:text="${event.location.location}">location</span>, <span th:text="${event.dateTime}">date</span></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
+        <h4>These are your followed institutions:</h4>
+        <div class="list-group">
+            <ul th:each="institution:${user.followedInstitutions}" class="events-list">
+                <li class="event-list-item">
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading"><span th:text="${institution.username}">Institution</span></h4>
+                        <p class="list-group-item-text"><span th:text="${institution.genres}">genres</span></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <hr/>
+    <footer>© Partytura team</footer>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
 </body>
 </html>
