@@ -12,3 +12,30 @@
     text-align: center;
     margin: 10px 0;
 }
+
+#my-btn-block{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#twitter-connected-alert{
+    width: 85%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.events-list{
+    list-style-type: none;
+}
+
+.event-list-item{
+    width: 45%;
+}
+
+#create-event-form{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
