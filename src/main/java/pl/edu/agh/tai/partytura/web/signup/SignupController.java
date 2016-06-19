@@ -1,22 +1,21 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.signup;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.*;
 import org.springframework.social.connect.web.ProviderSignInUtils;
-import org.springframework.social.showcase.model.Attender;
-import org.springframework.social.showcase.model.Institution;
-import org.springframework.social.showcase.model.User;
-import org.springframework.social.showcase.persistence.AttenderRepository;
-import org.springframework.social.showcase.persistence.InstitutionRepository;
-import org.springframework.social.showcase.signin.SignInUtils;
+import pl.edu.agh.tai.partytura.web.config.UserType;
+import pl.edu.agh.tai.partytura.model.Attender;
+import pl.edu.agh.tai.partytura.model.Institution;
+import pl.edu.agh.tai.partytura.model.User;
+import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
+import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
+import pl.edu.agh.tai.partytura.web.signin.SignInUtils;
 
 import javax.validation.Valid;
 import java.util.Optional;

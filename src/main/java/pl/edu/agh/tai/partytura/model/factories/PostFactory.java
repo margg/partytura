@@ -1,8 +1,8 @@
 package pl.edu.agh.tai.partytura.model.factories;
 
-import org.springframework.stereotype.Component;
 import pl.edu.agh.tai.partytura.model.Post;
 import pl.edu.agh.tai.partytura.model.User;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 

@@ -1,12 +1,12 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.signup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.social.showcase.persistence.AttenderRepository;
-import org.springframework.social.showcase.persistence.InstitutionRepository;
+import pl.edu.agh.tai.partytura.persistence.AttenderRepository;
+import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 import org.springframework.stereotype.Component;
 
 @Component

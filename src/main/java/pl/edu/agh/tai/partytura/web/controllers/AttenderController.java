@@ -66,7 +66,7 @@ public class AttenderController {
       user = institutions.get(0);
     } else {
       // new user! yay!
-      Attender newAttender = attenderRepository.insert(new Attender(username, id));
+      Attender newAttender = attenderRepository.insert(new Attender(username));
       attenderRepository.save(newAttender);
       user = newAttender;
     }

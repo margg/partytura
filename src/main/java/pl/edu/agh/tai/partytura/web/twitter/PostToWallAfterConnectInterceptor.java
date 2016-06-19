@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.twitter;
+package pl.edu.agh.tai.partytura.web.twitter;
 
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.Connection;

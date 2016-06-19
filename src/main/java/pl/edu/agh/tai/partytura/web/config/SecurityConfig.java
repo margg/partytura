@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

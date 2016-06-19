@@ -77,7 +77,7 @@ public class HomeController {
   }
 
   private User getUser(long id) {
-    List<Attender> attenders = attenderRepository.findByTwitterId(id);
+/*    List<Attender> attenders = attenderRepository.findByTwitterId(id);
     List<Institution> institutions = institutionRepository.findByTwitterId(id);
     if (!attenders.isEmpty()) {
       // attender
@@ -91,7 +91,7 @@ public class HomeController {
         LOGGER.warn("Found {} users with ID = {}.", institutions.size(), id);
       }
       return institutions.get(0);
-    }
+    }*/
     return null;
   }
 
@@ -107,11 +107,11 @@ public class HomeController {
 
     switch (request.getParameter("role")) {
       case "Attender":
-        Attender attender = attenderRepository.insert(new Attender(name, id));
+        Attender attender = attenderRepository.insert(new Attender(name));
         model.addAttribute("user", attender);
         return "redirect:/dashboard";
       case "Institution":
-        Institution institution = institutionRepository.insert(new Institution(name, id));
+        Institution institution = institutionRepository.insert(new Institution(name));
         model.addAttribute("user", institution);
         return "redirect:/dashboard";
       default:

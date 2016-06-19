@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.signin;
+package pl.edu.agh.tai.partytura.web.signin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

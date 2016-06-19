@@ -21,12 +21,12 @@ public class Institution extends User {
   private Set<Event> createdEvents;
 
   @PersistenceConstructor
-  public Institution(String username, long twitterId) {
-    this(username, twitterId, new HashSet<>(), new HashSet<>());
+  public Institution(String username) {
+    this(username, new HashSet<>(), new HashSet<>());
   }
 
-  public Institution(String username, long twitterId, Set<String> genres, Set<Event> createdEvents) {
-    super(username, twitterId);
+  public Institution(String username, Set<String> genres, Set<Event> createdEvents) {
+    super(username);
     this.genres = genres;
     this.createdEvents = createdEvents;
   }

@@ -97,7 +97,7 @@ public class EventController {
 
     /*nie wiem czy to jest ładne, chciałam uniknąć rzutowania usera na instytucję, poza tym
     chyba trzeba updateowac institution repository, jak dodajemy jej event?*/
-    Institution i = institutionRepository.findByTwitterId(user.getTwitterId()).get(0);
+    Institution i = institutionRepository.findByUsername(user.getUsername()).get(0);
     i.addEvent(e);
 
     eventRepository.save(e);
@@ -188,7 +188,7 @@ public class EventController {
       user = institutions.get(0);
     } else {
       // new user! yay!
-      Attender newAttender = attenderRepository.insert(new Attender(username, id));
+      Attender newAttender = attenderRepository.insert(new Attender(username));
       attenderRepository.save(newAttender);
       user = newAttender;
     }

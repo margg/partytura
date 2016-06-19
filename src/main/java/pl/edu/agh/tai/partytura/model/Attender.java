@@ -1,13 +1,11 @@
 package pl.edu.agh.tai.partytura.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
-import pl.edu.agh.tai.partytura.web.View;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,24 +14,21 @@ import java.util.Set;
 public class Attender extends User {
 
   @Id
-  @JsonView(View.Attender.class)
   private String id;
 
   @DBRef
-  @JsonView(View.Attender.class)
   private Set<Institution> followedInstitutions;
 
   @DBRef
-  @JsonView(View.Attender.class)
   private Set<Event> joinedEvents;
 
   @PersistenceConstructor
-  public Attender(String username, long twitterId) {
-    this(username, twitterId, new HashSet<>(), new HashSet<>());
+  public Attender(String username) {
+    this(username, new HashSet<>(), new HashSet<>());
   }
 
-  public Attender(String username, long twitterId, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
-    super(username, twitterId);
+  public Attender(String username, Set<Institution> followedInstitutions, Set<Event> joinedEvents) {
+    super(username);
     this.followedInstitutions = followedInstitutions;
     this.joinedEvents = joinedEvents;
   }

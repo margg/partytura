@@ -115,11 +115,11 @@ public class PartyturaWebappApplication implements CommandLineRunner {
   }
 
   private Institution createInstitution(String name, long twitterId) {
-    return new Institution(name, twitterId);
+    return new Institution(name);
   }
 
   private Attender createAttender(String username, long twitterId) {
-    return new Attender(username, twitterId);
+    return new Attender(username);
   }
 
 }

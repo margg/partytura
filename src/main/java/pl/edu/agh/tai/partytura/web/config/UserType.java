@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.config;
 
 public enum UserType {
   ATTENDER,

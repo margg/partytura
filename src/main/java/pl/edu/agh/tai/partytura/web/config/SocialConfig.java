@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,8 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
-import org.springframework.social.showcase.signin.ImplicitSignInAdapter;
+import pl.edu.agh.tai.partytura.web.signin.ImplicitSignInAdapter;
+import pl.edu.agh.tai.partytura.web.signup.RepositoriesAwareConnectionSignup;
 
 import javax.sql.DataSource;
 

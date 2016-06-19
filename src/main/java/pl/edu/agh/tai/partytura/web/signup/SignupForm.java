@@ -1,6 +1,7 @@
-package org.springframework.social.showcase.config;
+package pl.edu.agh.tai.partytura.web.signup;
 
 import org.springframework.social.connect.UserProfile;
+import pl.edu.agh.tai.partytura.web.config.UserType;
 
 import javax.validation.constraints.NotNull;
 

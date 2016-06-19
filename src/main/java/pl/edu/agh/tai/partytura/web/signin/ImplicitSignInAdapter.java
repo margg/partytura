@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.signin;
+package pl.edu.agh.tai.partytura.web.signin;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;

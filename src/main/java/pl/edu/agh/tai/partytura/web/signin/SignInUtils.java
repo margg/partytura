@@ -1,4 +1,4 @@
-package org.springframework.social.showcase.signin;
+package pl.edu.agh.tai.partytura.web.signin;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

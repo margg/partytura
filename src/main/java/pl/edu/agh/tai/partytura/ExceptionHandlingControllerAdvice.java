@@ -1,4 +1,4 @@
-package org.springframework.social.showcase;
+package pl.edu.agh.tai.partytura;
 
 import org.springframework.social.RateLimitExceededException;
 import org.springframework.ui.Model;
