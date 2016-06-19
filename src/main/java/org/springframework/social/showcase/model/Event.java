@@ -13,63 +13,63 @@ import java.util.List;
 @Document
 public class Event {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    private String eventName;
+  private String eventName;
 
-    private String hashtag;
+  private String hashtag;
 
-    private LocalDateTime dateTime;
+  private LocalDateTime dateTime;
 
-    private EventLocation location;
+  private EventLocation location;
 
-    @DBRef
-    private List<Post> posts;
+  @DBRef
+  private List<Post> posts;
 
-    @PersistenceConstructor
-    public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
-        this(eventName, hashtag, dateTime, location, new ArrayList<>());
-    }
+  @PersistenceConstructor
+  public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {
+    this(eventName, hashtag, dateTime, location, new ArrayList<>());
+  }
 
-    public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location, List<Post> posts) {
-        this.eventName = eventName;
-        this.hashtag = hashtag;
-        this.dateTime = dateTime;
-        this.location = location;
-        this.posts = posts;
-    }
+  public Event(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location, List<Post> posts) {
+    this.eventName = eventName;
+    this.hashtag = hashtag;
+    this.dateTime = dateTime;
+    this.location = location;
+    this.posts = posts;
+  }
 
-    public void addPost(Post post) {
-        this.posts.add(post);
-    }
+  public void addPost(Post post) {
+    this.posts.add(post);
+  }
 
-    public List<Post> getPosts() {
-        return posts;
-    }
+  public List<Post> getPosts() {
+    return posts;
+  }
 
-    @Required
-    public void setPosts(List<Post> posts) {
-        this.posts = new ArrayList<>(posts);
-    }
+  @Required
+  public void setPosts(List<Post> posts) {
+    this.posts = new ArrayList<>(posts);
+  }
 
-    public String getEventName() {
-        return eventName;
-    }
+  public String getEventName() {
+    return eventName;
+  }
 
-    public String getHashtag() {
-        return hashtag;
-    }
+  public String getHashtag() {
+    return hashtag;
+  }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+  public LocalDateTime getDateTime() {
+    return dateTime;
+  }
 
-    public EventLocation getLocation() {
-        return location;
-    }
+  public EventLocation getLocation() {
+    return location;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 }

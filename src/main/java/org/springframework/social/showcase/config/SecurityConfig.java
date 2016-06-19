@@ -15,41 +15,41 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private ApplicationContext context;
+  @Autowired
+  private ApplicationContext context;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg");
-    }
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web
+        .ignoring()
+        .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg");
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .formLogin()
-                .loginPage("/signin")
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .formLogin()
+        .loginPage("/signin")
 //              .loginProcessingUrl("/signin/authenticate")
 //              .failureUrl("/signin?param.error=bad_credentials")
-                .and()
-                .logout()
-                .logoutUrl("/signout")
-                .deleteCookies("JSESSIONID")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/signin/**", "/signup/**", "/disconnect/twitter").permitAll()
-                .antMatchers("/**").authenticated()
+        .and()
+        .logout()
+        .logoutUrl("/signout")
+        .deleteCookies("JSESSIONID")
+        .and()
+        .authorizeRequests()
+        .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/signin/**", "/signup/**", "/disconnect/twitter").permitAll()
+        .antMatchers("/**").authenticated()
 //            .and()
 //              .rememberMe()
 //            .and()
 //              .apply(new SpringSocialConfigurer());
-        ;
-    }
+    ;
+  }
 
-    @Bean
-    public TextEncryptor textEncryptor() {
-        return Encryptors.noOpText();
-    }
+  @Bean
+  public TextEncryptor textEncryptor() {
+    return Encryptors.noOpText();
+  }
 
 }

@@ -1,18 +1,3 @@
-/*
- * Copyright 2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.social.showcase.config;
 
 import org.slf4j.Logger;
@@ -38,55 +23,55 @@ import java.util.Optional;
 
 @Controller
 public class SignupController {
-    private final ProviderSignInUtils signInUtils;
+  private final ProviderSignInUtils signInUtils;
 
-    @Autowired
-    private AttenderRepository attenders;
+  @Autowired
+  private AttenderRepository attenders;
 
-    @Autowired
-    private InstitutionRepository institutions;
+  @Autowired
+  private InstitutionRepository institutions;
 
-    @Autowired
-    public SignupController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository connectionRepository) {
-        this.signInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+  @Autowired
+  public SignupController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository connectionRepository) {
+    this.signInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+  }
+
+  @RequestMapping(value = "/signup", method = RequestMethod.GET)
+  public SignupForm signupForm(WebRequest request, Model model) {
+    Connection<?> connectionFromSession = signInUtils.getConnectionFromSession(request);
+    return Optional.<Connection<?>>ofNullable(connectionFromSession).map(connection -> {
+      SignupForm signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
+      model.addAttribute("form", signupForm);
+      model.addAttribute("types", UserType.values());
+      return signupForm;
+    }).orElse(null);
+  }
+
+  @RequestMapping(value = "/signup", method = RequestMethod.POST)
+  public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
+    if (formBinding.hasErrors()) {
+      return "/error";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public SignupForm signupForm(WebRequest request, Model model) {
-        Connection<?> connectionFromSession = signInUtils.getConnectionFromSession(request);
-        return Optional.<Connection<?>>ofNullable(connectionFromSession).map(connection -> {
-            SignupForm signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
-            model.addAttribute("form", signupForm);
-            model.addAttribute("types", UserType.values());
-            return signupForm;
-        }).orElse(null);
+    Optional<User> created = createAccount(form);
+    created.ifPresent(user -> {
+      SignInUtils.signin(user.getUsername());
+      signInUtils.doPostSignUp(user.getUsername(), request);
+    });
+
+    return created.isPresent() ? "redirect:/" : "/error";
+  }
+
+  private Optional<User> createAccount(SignupForm form) {
+    switch (form.getType()) {
+      case ATTENDER:
+        Attender attender = attenders.insert(new Attender(form.getUsername()));
+        return Optional.of(attender);
+      case INSTITUTION:
+        Institution institution = institutions.insert(new Institution(form.getUsername()));
+        return Optional.of(institution);
+      default:
+        return Optional.empty();
     }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
-        if (formBinding.hasErrors()) {
-            return "/error";
-        }
-
-        Optional<User> created = createAccount(form);
-        created.ifPresent(user -> {
-            SignInUtils.signin(user.getUsername());
-            signInUtils.doPostSignUp(user.getUsername(), request);
-        });
-
-        return created.isPresent() ? "redirect:/" : "/error";
-    }
-
-    private Optional<User> createAccount(SignupForm form) {
-        switch (form.getType()) {
-            case ATTENDER:
-                Attender attender = attenders.insert(new Attender(form.getUsername()));
-                return Optional.of(attender);
-            case INSTITUTION:
-                Institution institution = institutions.insert(new Institution(form.getUsername()));
-                return Optional.of(institution);
-            default:
-                return Optional.empty();
-        }
-    }
+  }
 }

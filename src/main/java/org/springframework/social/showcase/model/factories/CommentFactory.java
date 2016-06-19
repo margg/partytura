@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 @Component
 public class CommentFactory {
 
-    public Comment createComment(String content, User author) {
-        return createComment(content, author, LocalDateTime.now());
-    }
+  public Comment createComment(String content, User author) {
+    return createComment(content, author, LocalDateTime.now());
+  }
 
-    public Comment createComment(String content, User author, LocalDateTime dateTime) {
-        return new Comment(content, author, dateTime);
-    }
+  public Comment createComment(String content, User author, LocalDateTime dateTime) {
+    return new Comment(content, author, dateTime);
+  }
 }
