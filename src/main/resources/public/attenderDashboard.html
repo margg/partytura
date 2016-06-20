@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title th:text="${twitterProfile.name}">Dashboard</title>
+    <title th:text="${user.username}">Dashboard</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/normalize.css"/>
@@ -15,7 +15,7 @@
 
     <div class="sub-cont">
 
-        <h3>Hello, <span th:text="${twitterProfile.name}">Some User</span>!</h3>
+        <h3>Hello, <span th:text="${user.username}">Some User</span>!</h3>
 
         <h4>These are your upcoming events:</h4>
         <div class="list-group">
@@ -41,6 +41,11 @@
                 </li>
             </ul>
         </div>
+
+        <form th:action="@{/signout}" method="POST">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <button  class="btn btn-primary btn-sm btn-block">Sign Out</button>
+        </form>
 
     </div>
     <hr/>

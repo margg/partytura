@@ -43,14 +43,14 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     postRepository.deleteAll();
     commentRepository.deleteAll();
 
-    Attender john = attenderRepository.insert(createAttender("john", 1));
-    Attender stanley = attenderRepository.insert(createAttender("stanley", 2));
-    Attender keira = attenderRepository.insert(createAttender("keira", 3));
-    Attender aisha = attenderRepository.insert(createAttender("aisha", 4));
+    Attender john = attenderRepository.insert(createAttender("john"));
+    Attender stanley = attenderRepository.insert(createAttender("stanley"));
+    Attender keira = attenderRepository.insert(createAttender("keira"));
+    Attender aisha = attenderRepository.insert(createAttender("aisha"));
 
-    Institution iceKrakow = institutionRepository.insert(createInstitution("icekrakow", 5));
-    Institution ckrotunda = institutionRepository.insert(createInstitution("ckrotunda", 6));
-    Institution bagatela = institutionRepository.insert(createInstitution("teatrbagatela", 7));
+    Institution iceKrakow = institutionRepository.insert(createInstitution("icekrakow"));
+    Institution ckrotunda = institutionRepository.insert(createInstitution("ckrotunda"));
+    Institution bagatela = institutionRepository.insert(createInstitution("teatrbagatela"));
 
     Event elvislives = eventRepository.insert(createEvent("Elvis lives!", "elvislives",
             LocalDateTime.of(2016, 7, 10, 18, 0), new EventLocation("ICE Kraków")));
@@ -114,11 +114,11 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     return new Event(eventName, hashtag, dateTime, location);
   }
 
-  private Institution createInstitution(String name, long twitterId) {
+  private Institution createInstitution(String name) {
     return new Institution(name);
   }
 
-  private Attender createAttender(String username, long twitterId) {
+  private Attender createAttender(String username) {
     return new Attender(username);
   }
 

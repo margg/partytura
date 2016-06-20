@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -16,11 +16,21 @@
 
     <h3>Connect to Twitter</h3>
 
-    <form action="/connect/twitter" method="POST">
+    <form th:action="@{/connect/twitter}" method="POST">
         <div class="formInfo">
-            <p>You aren't connected to Twitter yet. Click the button to connect this application with your Twitter account.</p>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            <input type="hidden" name="scope" value="publish_actions,user_photos,offline_access"/>
+            <div class="formInfo">
+                <p>You aren't connected to twitter yet. Click the button to connect Partytura with your
+                    Twitter account.</p>
+            </div>
+            <p>
+                <button class="btn btn-primary btn-lg btn-block" type="submit" id="connect-twitter-btn">
+                    <img th:src="@{/social/twitter/connect-with-twitter.png}"/></button>
+            </p>
+            <label for="postToWall"><input id="postToWall" type="checkbox" name="postToWall"/> Tell your friends about
+                Partytura on your Twitter wall!</label>
         </div>
-        <p> <button class="btn btn-primary btn-lg btn-block" type="submit" id="my-btn-block">Connect to Twitter</button></p>
     </form>
     <hr/>
     <footer>© Partytura team</footer>

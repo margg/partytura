@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -15,7 +15,14 @@
     <div class="main-header" id="main-logo">Partytura</div>
 
     <div class="sub-cont">
-        <a href="/dashboard" class="btn btn-primary btn-lg btn-block" role="button" id="my-btn-block">Log in</a>
+
+        <!-- TWITTER SIGNIN -->
+        <form name="twitter_signin" id="twitter_signin" th:action="@{/signin/twitter}" method="POST">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
+            <input type="hidden" name="scope" value="publish_stream,user_photos,offline_access"></input>
+            <button class="btn btn-primary btn-block" type="submit"><img th:src="@{/social/twitter/sign-in-with-twitter-d.png}"></img></button>
+        </form>
+
     </div>
     <hr/>
     <footer>© Partytura team</footer>

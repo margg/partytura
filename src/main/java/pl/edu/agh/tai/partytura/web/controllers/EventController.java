@@ -2,9 +2,6 @@ package pl.edu.agh.tai.partytura.web.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.twitter.api.Twitter;
-import org.springframework.social.twitter.api.TwitterProfile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,76 +10,82 @@ import pl.edu.agh.tai.partytura.persistence.*;
 import pl.edu.agh.tai.partytura.web.View;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EventController {
 
-  private Twitter twitter;
-
-  private ConnectionRepository connectionRepository;
-
-  @Autowired
-  private AttenderRepository attenderRepository;
-
-  @Autowired
-  private EventRepository eventRepository;
-
-  @Autowired
   private InstitutionRepository institutionRepository;
 
-  @Autowired
+  private EventRepository eventRepository;
+
   private PostRepository postRepository;
 
-  @Autowired
   private CommentRepository commentRepository;
 
+  private UserService userService;
+
   @Autowired
-  public EventController(Twitter twitter, ConnectionRepository connectionRepository) {
-    this.twitter = twitter;
-    this.connectionRepository = connectionRepository;
+  public EventController(InstitutionRepository institutionRepository, EventRepository eventRepository,
+                         PostRepository postRepository, CommentRepository commentRepository, UserService userService) {
+    this.institutionRepository = institutionRepository;
+    this.eventRepository = eventRepository;
+    this.postRepository = postRepository;
+    this.commentRepository = commentRepository;
+    this.userService = userService;
   }
-
-
-
 
   @JsonView(View.Attender.class)
   @RequestMapping(path = "/api/event/{eventId}", method = RequestMethod.GET, produces = "application/json")
-  public @ResponseBody Event getEvent(@PathVariable("eventId") String eventId, Model model) {
-    // TODO: check permissions
-/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }*/
-
+  public
+  @ResponseBody
+  Event getEvent(@PathVariable("eventId") String eventId, Model model) {
     return eventRepository.findOne(eventId);
   }
 
   @RequestMapping(path = "/createEvent", method = RequestMethod.GET)
-  public String createEventPage(Model model){
-    // TODO: check permissions
-/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }*/
-
-    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-    User user = getUser(userProfile.getId(), userProfile.getName());
-
-    model.addAttribute("user", user);
-    model.addAttribute("event", new Event("","", LocalDateTime.now(), new EventLocation("")));
-    return "createEvent";
+  public String createEventPage(Principal currentUser, Model model) {
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      if (isAllowedToCreateEvents(u)) {
+        model.addAttribute("user", u);
+        model.addAttribute("event", new Event("", "", LocalDateTime.now(), new EventLocation("")));
+        return "createEvent";
+      } else {
+        return "/error";
+      }
+    }).orElse("/error");
   }
 
   @RequestMapping(path = "/createEvent/newEvent", method = RequestMethod.POST)
-  public String createEvent(HttpServletRequest request, Model model) {
-    // TODO: check permissions
-/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }*/
-    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-    User user = getUser(userProfile.getId(), userProfile.getName());
+  public String createEvent(Principal currentUser, HttpServletRequest request, Model model) {
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      if (isAllowedToCreateEvents(u)) {
+        Event event = eventRepository.insert(createEventFromRequest(request));
 
+        Institution institution = (Institution) u;
+        institution.addEvent(event);
+
+        eventRepository.save(event);
+        institutionRepository.save(institution);
+
+        model.addAttribute("event", event);
+        return "redirect:/event/" + event.getId();
+      } else {
+        return "/error";
+      }
+    }).orElse("/error");
+  }
+
+  private boolean isAllowedToCreateEvents(User user) {
+    return user instanceof Institution;
+  }
+
+  private Event createEventFromRequest(HttpServletRequest request) {
     String eventName = request.getParameter("eventName");
     String hashtag = request.getParameter("hashtag");
     String location = request.getParameter("location");
@@ -92,107 +95,61 @@ public class EventController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
 
-    Event event = new Event(eventName, hashtag, localDateTime, eventLocation);
-    Event e = eventRepository.insert(event);
-
-    /*nie wiem czy to jest ładne, chciałam uniknąć rzutowania usera na instytucję, poza tym
-    chyba trzeba updateowac institution repository, jak dodajemy jej event?*/
-    Institution i = institutionRepository.findByUsername(user.getUsername()).get(0);
-    i.addEvent(e);
-
-    eventRepository.save(e);
-    institutionRepository.save(i);
-
-    model.addAttribute("event", e);
-    String eventId = e.getId();
-    return "redirect:/event/" + eventId;
+    return new Event(eventName, hashtag, localDateTime, eventLocation);
   }
 
-  //
   @RequestMapping(path = "/event/{eventId}", method = RequestMethod.GET)
-  public String eventHomePage(@PathVariable("eventId") String eventId, Model model) {
-    // TODO: check permissions
-/*    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }*/
-
-    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-    User user = getUser(userProfile.getId(), userProfile.getName());
-
-    model.addAttribute("user", user);
-    model.addAttribute("event", eventRepository.findOne(eventId));
-    model.addAttribute("post", new Post("", user, LocalDateTime.now()));
-    model.addAttribute("comment", new Comment("", user, LocalDateTime.now()));
-    return "event";
+  public String eventHomePage(Principal currentUser, @PathVariable("eventId") String eventId, Model model) {
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      model.addAttribute("user", u);
+      model.addAttribute("event", eventRepository.findOne(eventId));
+      model.addAttribute("post", new Post("", u, LocalDateTime.now()));
+      model.addAttribute("comment", new Comment("", u, LocalDateTime.now()));
+      return "event";
+    }).orElse("/error");
   }
 
   @RequestMapping(path = "/event/{eventId}/newPost", method = RequestMethod.POST)
-  public String addPostToEvent(@ModelAttribute Post post,
+  public String addPostToEvent(Principal currentUser,
+                               @ModelAttribute Post post,
                                @PathVariable("eventId") String eventId, Model model) {
-    // TODO: check permissions
-    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }
-    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-    User user = getUser(userProfile.getId(), userProfile.getName());
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      Post p = postRepository.insert(post);
 
-    Post p = postRepository.insert(post);
+      Event event = eventRepository.findOne(eventId);
+      p.setDateTime(LocalDateTime.now());
+      p.setAuthor(u);
+      event.addPost(p);
 
-    Event event = eventRepository.findOne(eventId);
-    p.setDateTime(LocalDateTime.now());
-    p.setAuthor(user);
-    event.addPost(p);
+      postRepository.save(p);
+      eventRepository.save(event);
 
-    postRepository.save(p);
-    eventRepository.save(event);
-
-    model.addAttribute("event", event);
-    return "redirect:/event/" + eventId;
+      model.addAttribute("event", event);
+      return "redirect:/event/" + eventId;
+    }).orElse("/error");
   }
 
   @RequestMapping(path = "/event/{eventId}/post/{postId}/newComment", method = RequestMethod.POST)
-  public String addCommentToPost(@ModelAttribute Comment comment,
+  public String addCommentToPost(Principal currentUser,
+                                 @ModelAttribute Comment comment,
                                  @PathVariable("eventId") String eventId,
                                  @PathVariable("postId") String postId, Model model) {
-    // TODO: check permissions
-    if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
-      return "redirect:/connect/twitter";
-    }
-    TwitterProfile userProfile = twitter.userOperations().getUserProfile();
-    User user = getUser(userProfile.getId(), userProfile.getName());
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      Comment c = commentRepository.insert(comment);
 
-    Comment c = commentRepository.insert(comment);
+      Post post = postRepository.findOne(postId);
+      c.setDateTime(LocalDateTime.now());
+      c.setAuthor(u);
+      post.addComment(c);
 
-    Post post = postRepository.findOne(postId);
-    c.setDateTime(LocalDateTime.now());
-    c.setAuthor(user);
-    post.addComment(c);
+      commentRepository.save(c);
+      postRepository.save(post);
 
-    commentRepository.save(c);
-    postRepository.save(post);
-
-    Event event = eventRepository.findOne(eventId);
-
-    model.addAttribute("event", event);
-    return "redirect:/event/" + eventId;
+      model.addAttribute("event", eventRepository.findOne(eventId));
+      return "redirect:/event/" + eventId;
+    }).orElse("/error");
   }
-
-  private User getUser(long id, String username) {
-    // TODO: totally rewrite :D
-    List<Attender> attenders = attenderRepository.findByUsername(username);
-    List<Institution> institutions = institutionRepository.findByUsername(username);
-    User user;
-    if (!attenders.isEmpty()) {
-      user = attenders.get(0);
-    } else if (!institutions.isEmpty()) {
-      user = institutions.get(0);
-    } else {
-      // new user! yay!
-      Attender newAttender = attenderRepository.insert(new Attender(username));
-      attenderRepository.save(newAttender);
-      user = newAttender;
-    }
-    return user;
-  }
-
 }

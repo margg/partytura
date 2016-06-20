@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -18,8 +18,20 @@
 
     <div class="alert alert-success" role="alert" id="twitter-connected-alert">
         You are now connected to your Twitter account.
-        Click <a href="/dashboard" class="alert-link">here</a> to see your dashboard.
+        Click <a href="/" class="alert-link">here</a> to see your dashboard.
     </div>
+
+    <form id="disconnect" method="POST">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+        <div class="formInfo">
+            <p>
+                Partytura is connected to your Twitter account.
+                Click the button if you wish to disconnect.
+            </p>
+        </div>
+        <button class="btn btn-primary btn-sm btn-block" type="submit">Disconnect</button>
+        <input type="hidden" name="_method" value="delete" />
+    </form>
 
     <hr/>
     <footer>© Partytura team</footer>
