@@ -6,11 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,14 +30,18 @@ public class EventController {
 
   private UserService userService;
 
+  private TweetService tweetService;
+
   @Autowired
   public EventController(InstitutionRepository institutionRepository, EventRepository eventRepository,
-                         PostRepository postRepository, CommentRepository commentRepository, UserService userService) {
+                         PostRepository postRepository, CommentRepository commentRepository, UserService userService,
+                         TweetService tweetService) {
     this.institutionRepository = institutionRepository;
     this.eventRepository = eventRepository;
     this.postRepository = postRepository;
     this.commentRepository = commentRepository;
     this.userService = userService;
+    this.tweetService = tweetService;
   }
 
   @RequestMapping(path = "/createEvent", method = RequestMethod.GET)
@@ -92,10 +100,14 @@ public class EventController {
   public String eventHomePage(Principal currentUser, @PathVariable("eventId") String eventId, Model model) {
     Optional<User> user = userService.getUser(currentUser.getName());
     return user.map(u -> {
+      Event event = eventRepository.findOne(eventId);
       model.addAttribute("user", u);
-      model.addAttribute("event", eventRepository.findOne(eventId));
+      model.addAttribute("event", event);
       model.addAttribute("post", new Post("", u, LocalDateTime.now()));
       model.addAttribute("comment", new Comment("", u, LocalDateTime.now()));
+
+      List<Status> tweets = tweetService.getTweetsWithHashtag(event.getHashtag());
+      model.addAttribute("tweets", tweets);
       return "event";
     }).orElse("/error");
   }

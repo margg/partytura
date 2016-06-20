@@ -55,8 +55,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-jdbc")
     compile("org.springframework.boot:spring-boot-starter-test")
-
     compile("com.h2database:h2")
+
+    compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.4'
 }
 
 task wrapper(type: Wrapper) {
