@@ -43,7 +43,7 @@ public class SignupController {
       model.addAttribute("form", signupForm);
       model.addAttribute("types", UserType.values());
       return "/signup";
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
   }
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
