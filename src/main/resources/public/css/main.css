@@ -39,3 +39,17 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#comment-item{
+    background-color: rgb(238, 246, 249);
+}
+
+#content{
+    display: inline;
+    width: initial;
+}
+
+#commentContent{
+    display: inline;
+    width: initial;
+}

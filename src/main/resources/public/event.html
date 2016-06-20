@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -13,53 +13,66 @@
 
 <div class="cont">
     <div class="main-header" id="main-logo">Partytura</div>
+    <a href="/dashboard" class="btn btn-default" role="button"><span class="text-muted">Back to dashboard</span></a>
 
     <div class="sub-cont">
 
         <h3><span th:text="${event.eventName}">Event</span></h3>
 
-
-        <h4>Hashtag: <span th:text="${event.hashtag}"></span></h4>
-        <h4>Date: <span th:text="${event.dateTime}"></span></h4>
-        <h4>Location: <span th:text="${event.location.location}"></span></h4>
+        <table class="table table-bordered">
+            <tr>
+                <td class="text-muted">Hashtag</td>
+                <td><span th:text="${event.hashtag}"></span></td>
+            </tr>
+            <tr>
+                <td class="text-muted">Date</td>
+                <td><span th:text="${event.dateTime}"></span></td>
+            </tr>
+            <tr>
+                <td class="text-muted">Location</td>
+                <td><span th:text="${event.location.location}"></span></td>
+            </tr>
+        </table>
 
         <h4>Posts: </h4>
-        <ul th:each="post:${event.posts}">
-            <table>
-                <tbody>
-                <tr>
-                    <td th:text="${post.dateTime}"></td>
-                    <td th:text="${post.author.username}"></td>
-                    <td th:text="${post.content}"></td>
-                </tr>
-                <tr>
-                    <td><h5>Comments</h5></td>
-                </tr>
-                <tr th:each="comment : ${post.comments}">
-                    <td th:text="${comment.dateTime}"></td>
-                    <td th:text="${comment.author.username}"></td>
-                    <td th:text="${comment.content}"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Add comment:</p>
+        <div class="list-group">
+            <ul th:each="post:${event.posts}" class="events-list">
+                <li>
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading"><span th:text="${post.content}"></span></h4>
+                        <p class="list-group-item-text"><span th:text="${post.author.username}"></span></p>
+                        <p class="list-group-item-text"><span th:text="${post.dateTime}"></span></p>
+                        <br/>
+                        <div class="list-group">
+                            <ul th:each="comment:${post.comments}" class="events-list">
+                                <li>
+                                    <div class="list-group-item" id="comment-item">
+                                        <h4 class="list-group-item-heading"><span th:text="${comment.content}"></span>
+                                        </h4>
+                                        <p class="list-group-item-text"><span
+                                                th:text="${comment.author.username}"></span></p>
+                                        <p class="list-group-item-text"><span th:text="${comment.dateTime}"></span></p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
                         <form action="#"
                               th:action="@{/event/{eventId}/post/{postId}/newComment(eventId=${event.id}, postId=${post.id})}"
                               th:object="${comment}" method="post">
-                            <input type="text" id="commentContent" name="content" th:value="*{content}"/>
-                            <input type="submit"/>
+                            <input type="text" class="form-control" id="commentContent" name="content"
+                                   th:value="*{content}"/>
+                            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                         </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p>-------------------------</p>
-        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-        <p>Add post:</p>
         <form action="#" th:action="@{/event/{eventId}/newPost(eventId=${event.id})}" th:object="${post}" method="post">
-            <input type="text" id="content" name="content" th:value="*{content}"/>
-            <input type="submit"/>
+            <input type="text" class="form-control" id="content" name="content" th:value="*{content}"/>
+            <button type="submit" class="btn btn-primary btn-sm">Post</button>
         </form>
 
     </div>
