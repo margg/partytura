@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SigninController {
 
   @RequestMapping(value = "/signin", method = RequestMethod.GET)
-  public void signin() {
+  public String signin() {
+    return "index";
   }
 }

@@ -3,6 +3,7 @@ package pl.edu.agh.tai.partytura.web.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.edu.agh.tai.partytura.model.Attender;
 import pl.edu.agh.tai.partytura.model.Institution;
 import pl.edu.agh.tai.partytura.model.User;
@@ -12,6 +13,7 @@ import pl.edu.agh.tai.partytura.persistence.InstitutionRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);

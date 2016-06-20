@@ -5,14 +5,10 @@ import com.google.common.truth.Truth;
 import org.junit.Before;
 import org.junit.Test;
 import pl.edu.agh.tai.partytura.model.exceptions.UnfollowingNotFollowedInstitutionException;
-import pl.edu.agh.tai.partytura.model.factories.CommentFactory;
-import pl.edu.agh.tai.partytura.model.factories.PostFactory;
-
-import java.time.LocalDateTime;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class AttenderTest {
 
@@ -22,7 +18,7 @@ public class AttenderTest {
   @Before
   public void setUp() throws Exception {
     institution = mock(Institution.class);
-    attender = new Attender("wikla", 1);
+    attender = new Attender("wikla");
   }
 
   @Test

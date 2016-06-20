@@ -1,13 +1,12 @@
 package pl.edu.agh.tai.partytura;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.edu.agh.tai.partytura.model.Attender;
-import pl.edu.agh.tai.partytura.model.Event;
-import pl.edu.agh.tai.partytura.model.EventLocation;
-import pl.edu.agh.tai.partytura.model.Institution;
+import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
 
 import java.time.LocalDateTime;
@@ -96,8 +95,8 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     attenderRepository.save(ImmutableList.of(john, stanley, keira, aisha));
     institutionRepository.save(ImmutableList.of(iceKrakow, ckrotunda, bagatela));
 */
-/*
-    Attender veecla = attenderRepository.findByUsername("Veecla").get(0);
+
+/*    Attender veecla = attenderRepository.findByUsername("Veecla").get(0);
     Institution iceKrakow = institutionRepository.findByUsername("icekrakow").get(0);
     Institution ckrotunda = institutionRepository.findByUsername("ckrotunda").get(0);
     Event elvislives = eventRepository.findByHashtag("elvislives").get(0);
@@ -106,8 +105,7 @@ public class PartyturaWebappApplication implements CommandLineRunner {
     veecla.follow(ckrotunda);
     veecla.joinEvent(elvislives);
     veecla.joinEvent(hanszimmerlive);
-    attenderRepository.save(veecla);
-*/
+    attenderRepository.save(veecla);*/
   }
 
   private Event createEvent(String eventName, String hashtag, LocalDateTime dateTime, EventLocation location) {

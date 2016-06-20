@@ -9,18 +9,19 @@ buildscript {
 }
 
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
 
 war {
-    baseName = 'spring-social-showcase'
+    baseName = 'partytura'
 }
 
 eclipse {
     jdt {
-        sourceCompatibility = 1.7
-        targetCompatibility = 1.7
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
@@ -31,26 +32,21 @@ repositories {
 }
 
 dependencies {
-//  compile("org.springframework.boot:spring-boot-starter-social-facebook")
+    // test
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    compile group: 'com.google.truth', name: 'truth', version: '0.28'
+    compile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc'
 
-    // Override Spring Boot's choice of Spring Social Facebook version
-//  compile("org.springframework.social:spring-social-facebook:2.0.0.RELEASE")
-//  compile("org.springframework.social:spring-social-facebook-web:2.0.0.RELEASE")
-
-
-// http://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure
+    //
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
-
 
     compile("org.springframework.boot:spring-boot-starter-social-twitter")
 
     compile("org.springframework.boot:spring-boot-starter-data-rest")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-// http://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core
-    compile group: 'org.springframework.data', name: 'spring-data-commons-core'
-
-// http://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb
+    compile group: 'org.springframework', name: 'spring-jdbc'
     compile group: 'org.springframework.data', name: 'spring-data-mongodb'
 
     compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -58,6 +54,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-test")
+
     compile("com.h2database:h2")
 }
 

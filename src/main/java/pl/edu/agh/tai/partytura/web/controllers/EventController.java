@@ -1,13 +1,11 @@
 package pl.edu.agh.tai.partytura.web.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
-import pl.edu.agh.tai.partytura.web.View;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -36,14 +34,6 @@ public class EventController {
     this.postRepository = postRepository;
     this.commentRepository = commentRepository;
     this.userService = userService;
-  }
-
-  @JsonView(View.Attender.class)
-  @RequestMapping(path = "/api/event/{eventId}", method = RequestMethod.GET, produces = "application/json")
-  public
-  @ResponseBody
-  Event getEvent(@PathVariable("eventId") String eventId, Model model) {
-    return eventRepository.findOne(eventId);
   }
 
   @RequestMapping(path = "/createEvent", method = RequestMethod.GET)

@@ -36,14 +36,14 @@ public class SignupController {
   }
 
   @RequestMapping(value = "/signup", method = RequestMethod.GET)
-  public SignupForm signupForm(WebRequest request, Model model) {
+  public String signupForm(WebRequest request, Model model) {
     Connection<?> connectionFromSession = signInUtils.getConnectionFromSession(request);
     return Optional.<Connection<?>>ofNullable(connectionFromSession).map(connection -> {
       SignupForm signupForm = SignupForm.fromProviderUser(connection.fetchUserProfile());
       model.addAttribute("form", signupForm);
       model.addAttribute("types", UserType.values());
-      return signupForm;
-    }).orElse(null);
+      return "/signup";
+    }).orElse("/error");
   }
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
