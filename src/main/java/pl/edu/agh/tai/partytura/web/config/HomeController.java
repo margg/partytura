@@ -43,7 +43,7 @@ public class HomeController {
     ConnectionRepository connectionRepository = connectionRepositoryProvider.get();
     Connection<Twitter> connection = connectionRepository.findPrimaryConnection(Twitter.class);
     UserProfile profile = connection.fetchUserProfile();
-    model.addAttribute(profile);
+//    model.addAttribute(profile);
 
     String username = profile.getUsername();
     Optional<User> user = getUser(username);
