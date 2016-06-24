@@ -8,6 +8,36 @@
     <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+    <script>
+        window.twttr = (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function (f) {
+                t._e.push(f);
+            };
+
+            return t;
+        }(document, "script", "twitter-wjs"));
+    </script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.twttr.ready(function (twttr) {
+            var tweetIds = /*[[${tweetIds}]]*/ [];
+            tweetIds.forEach(function (tweetId) {
+                twttr.widgets.createTweet(tweetId, document.getElementById('tweet-list'), {align: 'center'})
+            });
+        });
+        /*]]>*/
+    </script>
 </head>
 <body>
 
@@ -76,17 +106,6 @@
         </form>
 
         <div class="list-group" id="tweet-list">
-            <ul th:each="tweet:${tweets}">
-                <li>
-                    <!-- TODO: embed tweets -->
-                    <div class="list-group-item">
-                        <h4 class="list-group-item-heading"><span th:text="${tweet.user.name}"></span></h4>
-                        <p class="list-group-item-text"><span th:text="${tweet.text}"></span></p>
-                        <p class="list-group-item-text"><span th:text="${tweet.createdAt}"></span></p>
-                        <br/>
-                    </div>
-                </li>
-            </ul>
         </div>
 
 

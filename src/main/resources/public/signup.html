@@ -22,9 +22,7 @@
 			<select name="type">
 				<option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
 			</select>
-
-			<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-			<button type="submit"><img th:src="@{/social/twitter/sign-in-with-twitter-d.png}"></img></button>
+			<button type="submit" style="background-image:url('https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png')"></button>
 		</form>
 
 	</div>
@@ -33,6 +31,5 @@
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!--<script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
 </body>
 </html>

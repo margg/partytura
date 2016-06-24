@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title th:text="${event.eventName}">Event</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="cont">
+    <div class="main-header" id="main-logo">Partytura</div>
+    <a href="/" class="btn btn-default" role="button"><span class="text-muted">Back to dashboard</span></a>
+
+    <div class="sub-cont">
+
+        <div class="list-group">
+            <ul th:each="event : ${events}" class="events-list">
+                <li class="event-list-item">
+                    <a th:href="@{~/event/{id}(id=${event.id})}" class="list-group-item">
+                        <h4 class="list-group-item-heading"><span th:text="${event.eventName}">Event</span></h4>
+                        <p class="list-group-item-text"><span th:text="${event.hashtag}">#hashtag</span></p>
+                        <p class="list-group-item-text"><span th:text="${event.location.location}">location</span>, <span th:text="${event.dateTime}">date</span></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+    <hr/>
+    <footer>© Partytura team</footer>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>-->
+</body>
+</html>

@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class EventController {
@@ -53,12 +52,12 @@ public class EventController {
         model.addAttribute("event", new Event("", "", LocalDateTime.now(), new EventLocation("")));
         return "createEvent";
       } else {
-        return "/error";
+        return "redirect:/error";
       }
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
   }
 
-  @RequestMapping(path = "/createEvent/newEvent", method = RequestMethod.POST)
+  @RequestMapping(path = "/createEvent", method = RequestMethod.POST)
   public String createEvent(Principal currentUser, HttpServletRequest request, Model model) {
     Optional<User> user = userService.getUser(currentUser.getName());
     return user.map(u -> {
@@ -74,9 +73,9 @@ public class EventController {
         model.addAttribute("event", event);
         return "redirect:/event/" + event.getId();
       } else {
-        return "/error";
+        return "redirect:/error";
       }
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
   }
 
   private boolean isAllowedToCreateEvents(User user) {
@@ -106,10 +105,13 @@ public class EventController {
       model.addAttribute("post", new Post("", u, LocalDateTime.now()));
       model.addAttribute("comment", new Comment("", u, LocalDateTime.now()));
 
-      List<Status> tweets = tweetService.getTweetsWithHashtag(event.getHashtag());
-      model.addAttribute("tweets", tweets);
+      model.addAttribute("tweetIds", getTweetIds(tweetService.getTweetsWithHashtag(event.getHashtag())));
       return "event";
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
+  }
+
+  private List<String> getTweetIds(List<Status> tweets) {
+    return tweets.stream().map(tweet -> String.valueOf(tweet.getId())).collect(Collectors.toList());
   }
 
   @RequestMapping(path = "/event/{eventId}/newPost", method = RequestMethod.POST)
@@ -130,7 +132,7 @@ public class EventController {
 
       model.addAttribute("event", event);
       return "redirect:/event/" + eventId;
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
   }
 
   @RequestMapping(path = "/event/{eventId}/post/{postId}/newComment", method = RequestMethod.POST)
@@ -152,6 +154,16 @@ public class EventController {
 
       model.addAttribute("event", eventRepository.findOne(eventId));
       return "redirect:/event/" + eventId;
-    }).orElse("/error");
+    }).orElse("redirect:/signin");
+  }
+  @RequestMapping(path = "/events", method = RequestMethod.GET)
+  public String showEvents(Principal currentUser, Model model) {
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      List<Event> events = eventRepository.findAll();
+      Collections.sort(events, (o1, o2) -> o2.getDateTime().compareTo(o1.getDateTime()));
+      model.addAttribute("events", events);
+      return "/events";
+    }).orElse("redirect:/signin");
   }
 }
