@@ -34,6 +34,14 @@
     width: 45%;
 }
 
+.institution-list{
+    list-style-type: none;
+}
+
+.institution-list-item{
+    width: 45%;
+}
+
 #create-event-form{
     width: 70%;
     margin-left: auto;

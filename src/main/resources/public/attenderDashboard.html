@@ -42,9 +42,11 @@
             </ul>
         </div>
 
+        <a th:href="@{~/events}"><button  class="btn btn-primary">Browse Events</button></a>
+        <a th:href="@{~/institutions}"><button  class="btn btn-primary">Browse Institutions</button></a>
         <form th:action="@{/signout}" method="POST">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-            <button  class="btn btn-primary btn-sm btn-block">Sign Out</button>
+            <button  class="btn btn-primary btn-sm">Sign Out</button>
         </form>
 
     </div>
