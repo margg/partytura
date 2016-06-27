@@ -15,14 +15,14 @@
     <div class="main-header" id="main-logo">Partytura</div>
 
     <div class="sub-cont">
-
-        <!-- TWITTER SIGNIN -->
-        <form name="twitter_signin" id="twitter_signin" th:action="@{/signin/twitter}" method="POST">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-            <input type="hidden" name="scope" value="publish_stream,user_photos,offline_access"></input>
-            <button class="btn btn-primary btn-block" type="submit"><img th:src="@{/social/twitter/sign-in-with-twitter-gray.png}"/></button>
-        </form>
-
+        <div class="signin-btn">
+            <!-- TWITTER SIGNIN -->
+            <form name="twitter_signin" id="twitter_signin" th:action="@{/signin/twitter}" method="POST">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <input type="hidden" name="scope" value="publish_stream,offline_access"/>
+                <input type="image" th:src="@{/social/twitter/sign-in-with-twitter-gray.png}"/>
+            </form>
+        </div>
     </div>
     <hr/>
     <footer>© Partytura team</footer>

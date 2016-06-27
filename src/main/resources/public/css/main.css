@@ -61,3 +61,7 @@
     display: inline;
     width: initial;
 }
+
+.signin-btn {
+    text-align: center;
+}
