@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.tai.partytura.model.*;
 import pl.edu.agh.tai.partytura.persistence.*;
 import twitter4j.Status;
-import twitter4j.TwitterException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -106,12 +105,20 @@ public class EventController {
       model.addAttribute("comment", new Comment("", u, LocalDateTime.now()));
 
       model.addAttribute("tweetIds", getTweetIds(tweetService.getTweetsWithHashtag(event.getHashtag())));
+      addJoinButtonInfoIfNeeded(model, u, event);
       return "event";
     }).orElse("redirect:/signin");
   }
 
   private List<String> getTweetIds(List<Status> tweets) {
     return tweets.stream().map(tweet -> String.valueOf(tweet.getId())).collect(Collectors.toList());
+  }
+
+  private void addJoinButtonInfoIfNeeded(Model model, User u, Event event) {
+    if (u instanceof Attender) {
+      model.addAttribute("showJoinButton", !((Attender) u).getJoinedEvents().contains(event));
+      model.addAttribute("joinButtonText", "Join Event");
+    }
   }
 
   @RequestMapping(path = "/event/{eventId}/newPost", method = RequestMethod.POST)
@@ -130,6 +137,20 @@ public class EventController {
       postRepository.save(p);
       eventRepository.save(event);
 
+      model.addAttribute("event", event);
+      return "redirect:/event/" + eventId;
+    }).orElse("redirect:/signin");
+  }
+
+  @RequestMapping(path = "/event/{eventId}/join", method = RequestMethod.POST)
+  public String joinEvent(Principal currentUser, @PathVariable("eventId") String eventId, Model model) {
+    Optional<User> user = userService.getUser(currentUser.getName());
+    return user.map(u -> {
+      Event event = eventRepository.findOne(eventId);
+      if (u instanceof Attender) {
+        ((Attender) u).joinEvent(event);
+        userService.save(u);
+      }
       model.addAttribute("event", event);
       return "redirect:/event/" + eventId;
     }).orElse("redirect:/signin");
@@ -156,6 +177,7 @@ public class EventController {
       return "redirect:/event/" + eventId;
     }).orElse("redirect:/signin");
   }
+
   @RequestMapping(path = "/events", method = RequestMethod.GET)
   public String showEvents(Principal currentUser, Model model) {
     Optional<User> user = userService.getUser(currentUser.getName());

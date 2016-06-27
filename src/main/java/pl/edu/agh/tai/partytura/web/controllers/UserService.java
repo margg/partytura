@@ -45,4 +45,14 @@ public class UserService {
     }
     return user;
   }
+
+  public void save(User user) {
+    if (user instanceof Attender) {
+      attenderRepository.save((Attender) user);
+    } else if (user instanceof Institution) {
+      institutionRepository.save((Institution) user);
+    } else {
+      // TODO: log
+    }
+  }
 }

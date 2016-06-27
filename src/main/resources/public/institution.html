@@ -18,6 +18,20 @@
 
     <div class="sub-cont">
 
+
+        <div th:switch="${showFollowButton}">
+            <form th:case="true" action="#"
+                  th:action="@{/institution/{instId}/follow(instId=${institution.username})}" method="post">
+                <button class="btn btn-primary btn-sm" type="submit"><span th:text="${followButtonText}"></span>
+                </button>
+            </form>
+            <form th:case="false" action="#"
+                  th:action="@{/institution/{instId}/unfollow(instId=${institution.username})}" method="post">
+                <button class="btn btn-primary btn-sm" type="submit"><span th:text="${unfollowButtonText}"></span>
+                </button>
+            </form>
+        </div>
+
         <h3><span th:text="${institution.username}">Institution</span></h3>
 
         <table class="table table-bordered">

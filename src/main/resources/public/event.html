@@ -49,6 +49,11 @@
 
         <h3><span th:text="${event.eventName}">Event</span></h3>
 
+        <form th:if="${showJoinButton} == true"
+              action="#" th:action="@{/event/{eventId}/join(eventId=${event.id})}" method="post">
+            <button class="btn btn-primary btn-sm" type="submit"><span th:text="${joinButtonText}"></span></button>
+        </form>
+
         <table class="table table-bordered">
             <tr>
                 <td class="text-muted">Hashtag</td>
